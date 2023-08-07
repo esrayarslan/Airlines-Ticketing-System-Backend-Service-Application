@@ -4,22 +4,18 @@ import com.arslanesra.entity.Airport;
 import com.arslanesra.entity.Route;
 import com.arslanesra.repository.AirportRepository;
 import com.arslanesra.repository.RouteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RouteService {
     private final RouteRepository routeRepository;
     private final AirportRepository airportRepository;
 
-
-    @Autowired
-    public RouteService(RouteRepository routeRepository, AirportRepository airportRepository) {
-        this.routeRepository = routeRepository;
-        this.airportRepository = airportRepository;
-    }
 
     public List<Route> getAllRoutes() {
         return routeRepository.findAll();

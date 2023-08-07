@@ -1,5 +1,6 @@
 package com.arslanesra.controller;
 
+import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.service.AirlineService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,12 @@ public class AirlineController {
 
     @GetMapping
     public List<Airline> getAllAirlines() {
+
         return airlineService.getAllAirline();
     }
     @PostMapping
-    public Airline createAirline(@RequestBody Airline airline) {
-        return airlineService.createAirline(airline);
+    public Airline createAirline(@RequestBody AirlineSaveRequest request) {
+        return airlineService.createAirline(request);
     }
 
     @GetMapping("/search")
