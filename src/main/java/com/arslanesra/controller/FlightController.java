@@ -21,8 +21,8 @@ public class FlightController {
     }
 
     @PostMapping
-    public Flight createFlight(@RequestBody Flight flight) {
-        return flightService.createFlight(flight);
+    public Flight createFlight(@RequestBody Flight flight, @RequestParam Long routeId) {
+        return flightService.createFlight(flight, routeId);
     }
 
     @GetMapping("/search")
