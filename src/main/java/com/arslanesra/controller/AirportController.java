@@ -1,8 +1,15 @@
 package com.arslanesra.controller;
 
+import com.arslanesra.dto.airline.AirlineSaveRequest;
+import com.arslanesra.dto.airline.AirlineSaveResponse;
+import com.arslanesra.dto.airline.AirlineUpdateRequest;
+import com.arslanesra.dto.airport.AirportSaveRequest;
+import com.arslanesra.dto.airport.AirportSaveResponse;
+import com.arslanesra.dto.airport.AirportUpdateRequest;
 import com.arslanesra.entity.Airport;
 import com.arslanesra.service.AirportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +27,15 @@ public class AirportController {
     }
 
     @PostMapping
-    public Airport createAirport(@RequestBody Airport airport) {
-        return airportService.createAirport(airport);
+    public ResponseEntity<AirportSaveResponse> createAirline(@RequestBody AirportSaveRequest airportSaveRequest) {
+        var response = airportService.save(airportSaveRequest);
+        return ResponseEntity.ok(response);
+
+    }
+
+    @PutMapping
+    public ResponseEntity<AirportSaveResponse> updateAirport(@RequestBody AirportUpdateRequest airportUpdateRequest){
+        return ResponseEntity.ok(airportService.update(airportUpdateRequest));
     }
 
     @GetMapping("/search")
