@@ -2,6 +2,7 @@ package com.arslanesra.controller;
 
 import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.dto.airline.AirlineSaveResponse;
+import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.service.AirlineService;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,6 @@ public class AirlineController {
         var airlines = airlineService.getAllAirline();
         return ResponseEntity.ok(airlines);
     }
-    @PostMapping
-    public ResponseEntity<AirlineSaveResponse> createAirline(@RequestBody AirlineSaveRequest airlineSaveRequest) {
-        var response = airlineService.save(airlineSaveRequest);
-        return ResponseEntity.ok(response);
-
-    }
-
     @GetMapping("/search")
     public ResponseEntity<List<Airline>> searchAirline(@RequestParam String keyword) {
         var airlines = airlineService.searchAirline(keyword);
@@ -42,4 +36,19 @@ public class AirlineController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(airlines);
 
     }
+    @PostMapping
+    public ResponseEntity<AirlineSaveResponse> createAirline(@RequestBody AirlineSaveRequest airlineSaveRequest) {
+        var response = airlineService.save(airlineSaveRequest);
+        return ResponseEntity.ok(response);
+
+    }
+
+    @PutMapping
+    public ResponseEntity<AirlineSaveResponse> updateAirline(@RequestBody AirlineUpdateRequest airlineUpdateRequest){
+        return ResponseEntity.ok(airlineService.update(airlineUpdateRequest));
+    }
+
+
+
+
 }

@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AirlineSaveResponse {
+public class AirlineUpdateRequest {
+
     private Long id;
     private String name;
 }
