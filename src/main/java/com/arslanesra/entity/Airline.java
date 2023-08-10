@@ -16,7 +16,7 @@ public class Airline {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "airline_name", nullable = false, length = 200)
+    @Column(name = "airline_name", nullable = false, length = 50)
     private String name;
 
 

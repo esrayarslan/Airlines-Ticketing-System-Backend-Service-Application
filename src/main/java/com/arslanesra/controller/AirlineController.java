@@ -1,10 +1,15 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.dto.airline.AirlineSaveRequest;
+import com.arslanesra.dto.airline.AirlineSaveResponse;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.service.AirlineService;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,17 +21,25 @@ public class AirlineController {
     private final AirlineService airlineService;
 
     @GetMapping
-    public List<Airline> getAllAirlines() {
+    public ResponseEntity<List<Airline>> getAirlines() {
 
-        return airlineService.getAllAirline();
+        var airlines = airlineService.getAllAirline();
+        return ResponseEntity.ok(airlines);
     }
     @PostMapping
-    public Airline createAirline(@RequestBody AirlineSaveRequest request) {
-        return airlineService.createAirline(request);
+    public ResponseEntity<AirlineSaveResponse> createAirline(@RequestBody AirlineSaveRequest airlineSaveRequest) {
+        var response = airlineService.save(airlineSaveRequest);
+        return ResponseEntity.ok(response);
+
     }
 
     @GetMapping("/search")
-    public List<Airline> searchAirline(@RequestParam String keyword) {
-        return airlineService.searchAirline(keyword);
+    public ResponseEntity<List<Airline>> searchAirline(@RequestParam String keyword) {
+        var airlines = airlineService.searchAirline(keyword);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("HEADER-AIRLINE", "Header value airline");
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(airlines);
+
     }
 }
