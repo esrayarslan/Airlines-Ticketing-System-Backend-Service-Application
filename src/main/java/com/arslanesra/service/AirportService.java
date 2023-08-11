@@ -35,7 +35,6 @@ public class AirportService {
                 .city(savedAirport.getCity())
                 .build();
     }
-
     public AirportSaveResponse update(AirportUpdateRequest airportUpdateRequest) {
         var optionalAirport = airportRepository.findById(airportUpdateRequest.getId());
         if (optionalAirport.isPresent()) {
