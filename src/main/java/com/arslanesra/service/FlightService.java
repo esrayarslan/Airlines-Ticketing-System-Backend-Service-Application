@@ -26,7 +26,6 @@ public class FlightService {
     public FlightSaveResponse save(FlightSaveRequest flightSaveRequest){
         var newFlight = Flight
                 .builder()
-                .id(flightSaveRequest.getId())
                 .departureAirport(flightSaveRequest.getDepartureAirport())
                 .arrivalAirport(flightSaveRequest.getArrivalAirport())
                 .route(flightSaveRequest.getRoute())
@@ -34,10 +33,9 @@ public class FlightService {
         Flight savedFlight = flightRepository.save(newFlight);
         return FlightSaveResponse
                 .builder()
-                .id(flightSaveRequest.getId())
-                .departureAirport(flightSaveRequest.getDepartureAirport())
-                .arrivalAirport(flightSaveRequest.getArrivalAirport())
-                .route(flightSaveRequest.getRoute())
+                .departureAirport(savedFlight.getDepartureAirport())
+                .arrivalAirport(savedFlight.getArrivalAirport())
+                .route(savedFlight.getRoute())
                 .build();
     }
 

@@ -29,8 +29,8 @@ public class PassengerService {
         Passenger savedPassenger = passengerRepository.save(newPassenger);
         return PassengerSaveResponse
                 .builder()
-                .firstName(passengerSaveRequest.getFirstName())
-                .lastName(passengerSaveRequest.getLastName())
+                .firstName(savedPassenger.getFirstName())
+                .lastName(savedPassenger.getLastName())
                 .build();
     }
 

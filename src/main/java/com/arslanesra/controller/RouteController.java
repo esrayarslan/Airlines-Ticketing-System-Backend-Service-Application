@@ -1,9 +1,16 @@
 package com.arslanesra.controller;
 
+import com.arslanesra.dto.airline.AirlineSaveRequest;
+import com.arslanesra.dto.airline.AirlineSaveResponse;
+import com.arslanesra.dto.airline.AirlineUpdateRequest;
+import com.arslanesra.dto.route.RouteSaveRequest;
+import com.arslanesra.dto.route.RouteSaveResponse;
+import com.arslanesra.dto.route.RouteUpdateRequest;
 import com.arslanesra.entity.Route;
 import com.arslanesra.service.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +27,15 @@ public class RouteController {
     }
 
     @PostMapping
-    public Route createRoute(@RequestBody Route route, @RequestParam Long fromAirportId, @RequestParam Long toAirportId) {
-        return routeService.createRoute(route, fromAirportId, toAirportId);
+    public ResponseEntity<RouteSaveResponse> createRoute(@RequestBody RouteSaveRequest routeSaveRequest) {
+        var response = routeService.save(routeSaveRequest);
+        return ResponseEntity.ok(response);
+
+    }
+
+    @PutMapping
+    public ResponseEntity<RouteSaveResponse> updateRoute(@RequestBody RouteUpdateRequest routeUpdateRequest){
+        return ResponseEntity.ok(routeService.update(routeUpdateRequest));
     }
 
 
