@@ -25,6 +25,10 @@ public class RouteController {
     public List<Route> getAllRoutes() {
         return routeService.getAllRoutes();
     }
+    @GetMapping("/search")
+    public List<Route> searchRoutes(@RequestParam String keyword) {
+        return routeService.searchRoutesByOrigin(keyword);
+    }
 
     @PostMapping
     public ResponseEntity<RouteSaveResponse> createRoute(@RequestBody RouteSaveRequest routeSaveRequest) {
@@ -39,8 +43,5 @@ public class RouteController {
     }
 
 
-    @GetMapping("/search")
-    public List<Route> searchRoutes(@RequestParam String keyword) {
-        return routeService.searchRoutesByOrigin(keyword);
-    }
+
 }

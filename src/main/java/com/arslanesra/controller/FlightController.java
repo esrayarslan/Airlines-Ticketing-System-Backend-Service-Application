@@ -24,7 +24,12 @@ public class FlightController {
 
     @GetMapping
     public List<Flight> getAllFlights() {
+
         return flightService.getAllFlights();
+    }
+    @GetMapping("/search")
+    public List<Flight> searchFlights(@RequestParam String keyword) {
+        return flightService.searchFlightsByDeparture(keyword);
     }
 
     @PostMapping
@@ -39,8 +44,5 @@ public class FlightController {
         return ResponseEntity.ok(flightService.update(flightUpdateRequest));
     }
 
-    @GetMapping("/search")
-    public List<Flight> searchFlights(@RequestParam String keyword) {
-        return flightService.searchFlightsByDeparture(keyword);
-    }
+
 }

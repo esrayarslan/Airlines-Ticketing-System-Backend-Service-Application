@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class TicketUpdateRequest {
     private Long id;
     private Flight flight;
+    private String ticketNumber;
     private String passengerName;
     private String maskedCardNumber;
 }

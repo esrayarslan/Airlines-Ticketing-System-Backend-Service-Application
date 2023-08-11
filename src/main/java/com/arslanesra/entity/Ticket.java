@@ -19,10 +19,15 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flight_id", nullable = false)
     private Flight flight;
+    @Column(name = "ticket_number", nullable = false)
+    private String ticketNumber;
     @Column(nullable = false)
     private String passengerName;
     @Column(nullable = false)
     private String cardNumber;
     @Column(nullable = false)
     private String maskedCardNumber;
+
+    private boolean cancelled = false;
+    private boolean deleted = false;
 }

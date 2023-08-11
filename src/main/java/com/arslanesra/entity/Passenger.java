@@ -22,5 +22,4 @@ public class Passenger {
     @Column(name = "last_name", nullable = false, length = 25)
     private String lastName;
 
-
 }

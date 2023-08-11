@@ -23,7 +23,12 @@ public class PassengerController {
 
     @GetMapping
     public List<Passenger> getAllPassengers() {
+
         return passengerService.getAllPassengers();
+    }
+    @GetMapping("/search")
+    public List<Passenger> searchPassengers(@RequestParam String keyword) {
+        return passengerService.searchPassengersByFirstName(keyword);
     }
 
     @PostMapping
@@ -38,8 +43,5 @@ public class PassengerController {
         return ResponseEntity.ok(passengerService.update(passengerUpdateRequest));
     }
 
-    @GetMapping("/search")
-    public List<Passenger> searchPassengers(@RequestParam String keyword) {
-        return passengerService.searchPassengersByFirstName(keyword);
-    }
+
 }
