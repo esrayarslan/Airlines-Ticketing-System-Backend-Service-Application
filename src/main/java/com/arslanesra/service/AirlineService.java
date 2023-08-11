@@ -36,6 +36,7 @@ public class AirlineService {
         var optionalAirline = airlineRepository.findById(airlineUpdateRequest.getId());
         if (optionalAirline.isPresent()) {
             var airline = optionalAirline.get();
+            airline.setId(airlineUpdateRequest.getId());
             airline.setName(airlineUpdateRequest.getName());
             airline.setAirplane(airlineUpdateRequest.getAirplane());
             airline = airlineRepository.save(airline);
