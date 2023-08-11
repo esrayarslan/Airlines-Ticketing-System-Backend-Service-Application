@@ -22,11 +22,13 @@ public class AirlineService {
         var newAirline = Airline
                 .builder()
                 .name(airlineSaveRequest.getName())
+                .airplane(airlineSaveRequest.getAirplane())
                 .build();
         Airline savedAirline = airlineRepository.save(newAirline);
         return AirlineSaveResponse
                 .builder()
                 .name(savedAirline.getName())
+                .airplane(savedAirline.getAirplane())
                 .build();
     }
 
@@ -35,11 +37,13 @@ public class AirlineService {
         if (optionalAirline.isPresent()) {
             var airline = optionalAirline.get();
             airline.setName(airlineUpdateRequest.getName());
+            airline.setAirplane(airlineUpdateRequest.getAirplane());
             airline = airlineRepository.save(airline);
             return AirlineSaveResponse
                     .builder()
-                    .name(airline.getName())
                     .id(airline.getId())
+                    .name(airline.getName())
+                    .airplane(airline.getAirplane())
                     .build();
         }
         throw new RuntimeException("Airline not found");

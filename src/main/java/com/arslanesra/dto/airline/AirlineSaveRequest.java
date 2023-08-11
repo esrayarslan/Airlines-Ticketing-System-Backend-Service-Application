@@ -12,5 +12,6 @@ public class AirlineSaveRequest {
     @NotBlank
     @Size(min = 5, max = 150)
     private String name;
+    private String airplane;
 
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class FlightController {
     }
 
     @PostMapping
-    public ResponseEntity<FlightSaveResponse> createFlight(@RequestBody FlightSaveRequest flightSaveRequest) {
+    public ResponseEntity<FlightSaveResponse> createFlight(@Valid @RequestBody FlightSaveRequest flightSaveRequest) {
         var response = flightService.save(flightSaveRequest);
         return ResponseEntity.ok(response);
 

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class PassengerController {
     }
 
     @PostMapping
-    public ResponseEntity<PassengerSaveResponse> createPassenger(@RequestBody PassengerSaveRequest passengerSaveRequest) {
+    public ResponseEntity<PassengerSaveResponse> createPassenger(@Valid @RequestBody PassengerSaveRequest passengerSaveRequest) {
         var response = passengerService.save(passengerSaveRequest);
         return ResponseEntity.ok(response);
 

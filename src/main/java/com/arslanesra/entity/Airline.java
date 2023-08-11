@@ -18,6 +18,8 @@ public class Airline {
     private Long id;
     @Column(name = "airline_name", nullable = false, length = 50)
     private String name;
+    @Column(name = "airplane", nullable = false, length = 100)
+    private String airplane;
 
 
 
