@@ -1,5 +1,12 @@
 package com.arslanesra.service;
 
+import com.arslanesra.dto.airline.AirlineSaveRequest;
+import com.arslanesra.dto.airline.AirlineSaveResponse;
+import com.arslanesra.dto.airline.AirlineUpdateRequest;
+import com.arslanesra.dto.passenger.PassengerSaveRequest;
+import com.arslanesra.dto.passenger.PassengerSaveResponse;
+import com.arslanesra.dto.passenger.PassengerUpdateRequest;
+import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Passenger;
 import com.arslanesra.repository.PassengerRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +19,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PassengerService {
     private final PassengerRepository passengerRepository;
+
+    public PassengerSaveResponse save(PassengerSaveRequest passengerSaveRequest){
+        var newPassenger = Passenger
+                .builder()
+                .firstName(passengerSaveRequest.getFirstName())
+                .lastName(passengerSaveRequest.getLastName())
+                .build();
+        Passenger savedPassenger = passengerRepository.save(newPassenger);
+        return PassengerSaveResponse
+                .builder()
+                .firstName(passengerSaveRequest.getFirstName())
+                .lastName(passengerSaveRequest.getLastName())
+                .build();
+    }
+
+    public PassengerSaveResponse update(PassengerUpdateRequest passengerUpdateRequest) {
+        var optionalPassenger = passengerRepository.findById(passengerUpdateRequest.getId());
+        if (optionalPassenger.isPresent()) {
+            var passenger = optionalPassenger.get();
+            passenger.setId(passengerUpdateRequest.getId());
+            passenger.setFirstName(passengerUpdateRequest.getFirstName());
+            passenger.setLastName(passengerUpdateRequest.getLastName());
+            passenger = passengerRepository.save(passenger);
+            return PassengerSaveResponse
+                    .builder()
+                    .id(passenger.getId())
+                    .firstName(passenger.getFirstName())
+                    .lastName(passenger.getLastName())
+                    .build();
+        }
+        throw new RuntimeException("Airline not found");
+
+    }
 
 
     public List<Passenger> getAllPassengers() {

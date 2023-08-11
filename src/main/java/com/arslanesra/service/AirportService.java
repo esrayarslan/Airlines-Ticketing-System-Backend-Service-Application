@@ -40,7 +40,10 @@ public class AirportService {
         var optionalAirport = airportRepository.findById(airportUpdateRequest.getId());
         if (optionalAirport.isPresent()) {
             var airport = optionalAirport.get();
+            airport.setId(airportUpdateRequest.getId());
             airport.setName(airportUpdateRequest.getName());
+            airport.setCode(airportUpdateRequest.getCode());
+            airport.setCity(airportUpdateRequest.getCity());
             airport = airportRepository.save(airport);
             return AirportSaveResponse
                     .builder()
