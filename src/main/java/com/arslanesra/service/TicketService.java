@@ -83,4 +83,8 @@ public class TicketService {
     public List<Ticket> getActiveTickets() {
         return ticketRepository.findByDeletedFalse();
     }
+
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
+    }
 }

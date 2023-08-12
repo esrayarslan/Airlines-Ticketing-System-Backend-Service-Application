@@ -50,7 +50,7 @@ public class AirlineService {
         throw new RuntimeException("Airline not found");
     }
 
-    public List<Airline> getAllAirline() {
+    public List<Airline> getAllAirlines() {
 
         return airlineRepository.findAll();
     }

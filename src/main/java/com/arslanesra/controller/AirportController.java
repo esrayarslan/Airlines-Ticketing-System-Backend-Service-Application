@@ -1,5 +1,6 @@
 package com.arslanesra.controller;
 
+import com.arslanesra.api.BaseResponse;
 import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.dto.airline.AirlineSaveResponse;
 import com.arslanesra.dto.airline.AirlineUpdateRequest;
@@ -9,6 +10,7 @@ import com.arslanesra.dto.airport.AirportUpdateRequest;
 import com.arslanesra.entity.Airport;
 import com.arslanesra.service.AirportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,17 @@ public class AirportController {
     @GetMapping
     public List<Airport> getAllAirports() {
         return airportService.getAllAirports();
+    }
+    @GetMapping("/airports")
+    public ResponseEntity<BaseResponse> getAirport() {
+        List<Airport> airports = airportService.getAllAirports();
+
+        BaseResponse response = new BaseResponse();
+        response.setStatusCode(HttpStatus.OK.value());
+        response.setMessage("Success");
+        response.setData(airports);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
