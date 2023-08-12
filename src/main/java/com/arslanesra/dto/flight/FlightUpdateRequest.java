@@ -1,5 +1,6 @@
 package com.arslanesra.dto.flight;
 
+import com.arslanesra.entity.Airport;
 import com.arslanesra.entity.Route;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class FlightUpdateRequest {
     private Long id;
 
-    private String departureAirport;
-    private String arrivalAirport;
+    private Airport fromAirport;
+    private Airport toAirport;
     private Route route;
 }

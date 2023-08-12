@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RouteUpdateRequest {
     private Long id;
-    private String departureAirport;
-    private String arrivalAirport;
-    private Airport toAirport;
+    private String departureLocation;
+    private String arrivalLocation;
+
 }

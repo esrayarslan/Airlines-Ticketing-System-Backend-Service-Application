@@ -18,8 +18,13 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String departureAirport;
-    private String arrivalAirport;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_airport_id", nullable = false)
+    private Airport fromAirport;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_airport_id", nullable = false)
+    private Airport toAirport;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id", nullable = false)

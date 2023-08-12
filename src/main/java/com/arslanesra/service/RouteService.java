@@ -25,16 +25,14 @@ public class RouteService {
     public RouteSaveResponse save(RouteSaveRequest routeSaveRequest){
         var newRoute = Route
                 .builder()
-                .departureAirport(routeSaveRequest.getDepartureAirport())
-                .arrivalAirport(routeSaveRequest.getArrivalAirport())
-                .toAirport(routeSaveRequest.getToAirport())
+                .departureLocation(routeSaveRequest.getDepartureLocation())
+                .arrivalLocation(routeSaveRequest.getArrivalLocation())
                 .build();
         Route savedRoute = routeRepository.save(newRoute);
         return RouteSaveResponse
                 .builder()
-                .departureAirport(savedRoute.getDepartureAirport())
-                .arrivalAirport(savedRoute.getArrivalAirport())
-                .toAirport(savedRoute.getToAirport())
+                .departureLocation(savedRoute.getDepartureLocation())
+                .arrivalLocation(savedRoute.getArrivalLocation())
                 .build();
     }
 
@@ -43,9 +41,8 @@ public class RouteService {
         if (optionalRoute.isPresent()) {
             var route = optionalRoute.get();
             route.setId(routeUpdateRequest.getId());
-            route.setDepartureAirport(routeUpdateRequest.getDepartureAirport());
-            route.setArrivalAirport(routeUpdateRequest.getArrivalAirport());
-            route.setToAirport(routeUpdateRequest.getToAirport());
+            route.setDepartureLocation(routeUpdateRequest.getArrivalLocation());
+            route.setArrivalLocation(routeUpdateRequest.getArrivalLocation());
             route = routeRepository.save(route);
             return RouteSaveResponse
                     .builder()
@@ -53,7 +50,6 @@ public class RouteService {
                     .build();
         }
         throw new RuntimeException("Route not found");
-
     }
 
 
@@ -62,14 +58,13 @@ public class RouteService {
     }
 
     public Route createRoute(Route route, Long fromAirportId, Long toAirportId) {
-        Airport fromAirport = airportRepository.getById(fromAirportId);
-        Airport toAirport = airportRepository.getById(toAirportId);
-        route.setToAirport(fromAirport);
-        route.setToAirport(toAirport);
+        Airport departureLocation = airportRepository.getById(fromAirportId);
+        Airport arrivalLocation = airportRepository.getById(toAirportId);
+
         return routeRepository.save(route);
     }
 
     public List<Route> searchRoutesByOrigin(String keyword) {
-        return routeRepository.findByDepartureAirportContaining(keyword);
+        return routeRepository.findByDepartureLocationContaining(keyword);
     }
 }

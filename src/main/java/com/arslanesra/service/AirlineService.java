@@ -48,14 +48,12 @@ public class AirlineService {
                     .build();
         }
         throw new RuntimeException("Airline not found");
-
     }
 
     public List<Airline> getAllAirline() {
 
         return airlineRepository.findAll();
     }
-
     public Airline createAirline(AirlineSaveRequest request) {
 
         Airline airline = new Airline();

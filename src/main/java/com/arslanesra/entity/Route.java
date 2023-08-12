@@ -21,12 +21,9 @@ public class Route {
     private Long id;
 
     @Column(name = "departure_location", nullable = false)
-    private String departureAirport;
+    private String departureLocation;
     @Column(name = "arrival_location", nullable = false )
-    private String arrivalAirport;
+    private String arrivalLocation;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "to_airport_id", nullable = false)
-    private Airport toAirport;
 
 }

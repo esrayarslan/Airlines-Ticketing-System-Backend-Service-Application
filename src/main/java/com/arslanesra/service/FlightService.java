@@ -1,18 +1,13 @@
 package com.arslanesra.service;
 
-import com.arslanesra.dto.airline.AirlineSaveRequest;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.dto.flight.FlightSaveRequest;
 import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.flight.FlightUpdateRequest;
-import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Flight;
 import com.arslanesra.entity.Route;
 import com.arslanesra.repository.FlightRepository;
 import com.arslanesra.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +21,15 @@ public class FlightService {
     public FlightSaveResponse save(FlightSaveRequest flightSaveRequest){
         var newFlight = Flight
                 .builder()
-                .departureAirport(flightSaveRequest.getDepartureAirport())
-                .arrivalAirport(flightSaveRequest.getArrivalAirport())
+                .fromAirport(flightSaveRequest.getFromAirport())
+                .toAirport(flightSaveRequest.getToAirport())
                 .route(flightSaveRequest.getRoute())
                 .build();
         Flight savedFlight = flightRepository.save(newFlight);
         return FlightSaveResponse
                 .builder()
-                .departureAirport(savedFlight.getDepartureAirport())
-                .arrivalAirport(savedFlight.getArrivalAirport())
+                .fromAirport(savedFlight.getFromAirport())
+                .toAirport(savedFlight.getToAirport())
                 .route(savedFlight.getRoute())
                 .build();
     }
@@ -44,20 +39,19 @@ public class FlightService {
         if (optionalFlight.isPresent()) {
             var flight = optionalFlight.get();
             flight.setId(flightUpdateRequest.getId());
-            flight.setDepartureAirport(flightUpdateRequest.getDepartureAirport());
-            flight.setArrivalAirport(flightUpdateRequest.getArrivalAirport());
+            flight.setFromAirport(flightUpdateRequest.getFromAirport());
+            flight.setToAirport(flightUpdateRequest.getToAirport());
             flight.setRoute(flightUpdateRequest.getRoute());
             flight = flightRepository.save(flight);
             return FlightSaveResponse
                     .builder()
                     .id(flight.getId())
-                    .departureAirport(flight.getDepartureAirport())
-                    .arrivalAirport(flight.getArrivalAirport())
+                    .fromAirport(flight.getFromAirport())
+                    .toAirport(flight.getToAirport())
                     .route(flight.getRoute())
                     .build();
         }
-        throw new RuntimeException("Airline not found");
-
+        throw new RuntimeException("Flight not found");
     }
 
     public List<Flight> getAllFlights() {
@@ -71,6 +65,6 @@ public class FlightService {
     }
 
     public List<Flight> searchFlightsByDeparture(String keyword) {
-        return flightRepository.findByDepartureAirportContaining(keyword);
+        return flightRepository.findByFromAirportContaining(keyword);
     }
 }

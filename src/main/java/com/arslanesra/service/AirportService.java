@@ -53,7 +53,6 @@ public class AirportService {
                     .build();
         }
         throw new RuntimeException("Airport not found");
-
     }
 
     public List<Airport> getAllAirports() {

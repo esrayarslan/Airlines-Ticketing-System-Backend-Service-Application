@@ -33,7 +33,7 @@ public class PassengerController {
     }
 
     @PostMapping
-    public ResponseEntity<PassengerSaveResponse> createPassenger(@Valid @RequestBody PassengerSaveRequest passengerSaveRequest) {
+    public ResponseEntity<PassengerSaveResponse> createPassenger( @RequestBody PassengerSaveRequest passengerSaveRequest) {
         var response = passengerService.save(passengerSaveRequest);
         return ResponseEntity.ok(response);
 

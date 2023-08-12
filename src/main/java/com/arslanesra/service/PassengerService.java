@@ -49,8 +49,7 @@ public class PassengerService {
                     .lastName(passenger.getLastName())
                     .build();
         }
-        throw new RuntimeException("Airline not found");
-
+        throw new RuntimeException("Passenger not found");
     }
 
 
