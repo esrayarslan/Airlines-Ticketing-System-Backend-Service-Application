@@ -26,10 +26,11 @@ public class FlightController {
         var flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);
     }
-   /* @GetMapping("/search")
-    public List<Flight> searchFlights(@RequestParam String keyword) {
-        return flightService.searchFlightsByDeparture(keyword);
-    }*/
+    @GetMapping("/search")
+    public ResponseEntity<List<Flight>> searchFlightsByDepartureAirport(@RequestParam String keyword) {
+        List<Flight> flights = flightService.searchFlightsByDepartureAirport(keyword);
+        return new ResponseEntity<>(flights, HttpStatus.OK);
+    }
     @GetMapping("/flights")
     public ResponseEntity<BaseResponse> getFlight() {
         List<FlightSaveResponse> flights = flightService.getAllFlights();
@@ -46,9 +47,7 @@ public class FlightController {
     public ResponseEntity<FlightSaveResponse> createFlight(@Valid @RequestBody FlightSaveRequest flightSaveRequest) {
         var response = flightService.save(flightSaveRequest);
         return ResponseEntity.ok(response);
-
     }
-
     @PutMapping
     public ResponseEntity<FlightSaveResponse> updateFlight(@RequestBody FlightUpdateRequest flightUpdateRequest){
         return ResponseEntity.ok(flightService.update(flightUpdateRequest));

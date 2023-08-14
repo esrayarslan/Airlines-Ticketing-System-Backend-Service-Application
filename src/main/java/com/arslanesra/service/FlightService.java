@@ -56,9 +56,9 @@ public class FlightService {
         return flightRepository.save(flight);
     }*/
 
-    /*public List<Flight> searchFlightsByDeparture(String keyword) {
-        return flightRepository.findByFromAirportContaining(keyword);
-    }*/
+    public List<Flight> searchFlightsByDepartureAirport(String keyword) {
+        return flightRepository.findByRouteDepartureAirportContaining(keyword);
+    }
     private static FlightSaveResponse getFlightSaveResponse(Flight savedFlight) {
         return FlightSaveResponse
                 .builder()
