@@ -21,7 +21,7 @@ public class FlightController {
 
 
     @GetMapping
-    public ResponseEntity<List<Flight>> getAllFlights() {
+    public ResponseEntity<List<FlightSaveResponse>> getAllFlights() {
 
         var flights = flightService.getAllFlights();
         return ResponseEntity.ok(flights);
@@ -32,7 +32,7 @@ public class FlightController {
     }*/
     @GetMapping("/flights")
     public ResponseEntity<BaseResponse> getFlight() {
-        List<Flight> flights = flightService.getAllFlights();
+        List<FlightSaveResponse> flights = flightService.getAllFlights();
 
         BaseResponse response = new BaseResponse();
         response.setStatusCode(HttpStatus.OK.value());

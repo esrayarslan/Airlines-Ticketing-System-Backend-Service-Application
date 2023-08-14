@@ -2,7 +2,6 @@ package com.arslanesra.service;
 
 import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.repository.AirlineRepository;
 import jakarta.transaction.Transactional;
@@ -32,24 +31,6 @@ public class AirlineService {
                 .airplane(savedAirline.getAirplane())
                 .build();
     }
-    public AirlineSaveResponse update(AirlineUpdateRequest airlineUpdateRequest) {
-        var optionalAirline = airlineRepository.findById(airlineUpdateRequest.getId());
-        if (optionalAirline.isPresent()) {
-            var airline = optionalAirline.get();
-            airline.setId(airlineUpdateRequest.getId());
-            airline.setName(airlineUpdateRequest.getName());
-            airline.setAirplane(airlineUpdateRequest.getAirplane());
-            airline = airlineRepository.save(airline);
-            return AirlineSaveResponse
-                    .builder()
-                    .id(airline.getId())
-                    .name(airline.getName())
-                    .airplane(airline.getAirplane())
-                    .build();
-        }
-        throw new RuntimeException("Airline not found");
-    }
-
     public List<Airline> getAllAirlines() {
 
         return airlineRepository.findAll();

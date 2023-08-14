@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AirportUpdateRequest {
     private Long id;
-    private String code;
     private String name;
-    private String city;
+
 }

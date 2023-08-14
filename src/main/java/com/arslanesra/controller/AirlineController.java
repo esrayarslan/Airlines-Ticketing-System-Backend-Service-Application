@@ -3,7 +3,6 @@ package com.arslanesra.controller;
 import com.arslanesra.api.BaseResponse;
 import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.service.AirlineService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +45,7 @@ public class AirlineController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<AirlineSaveResponse> createAirline(@Valid @RequestBody AirlineSaveRequest airlineSaveRequest) {
         var response = airlineService.save(airlineSaveRequest);
@@ -53,10 +53,6 @@ public class AirlineController {
 
     }
 
-    @PutMapping
-    public ResponseEntity<AirlineSaveResponse> updateAirline(@RequestBody AirlineUpdateRequest airlineUpdateRequest){
-        return ResponseEntity.ok(airlineService.update(airlineUpdateRequest));
-    }
 
 
 

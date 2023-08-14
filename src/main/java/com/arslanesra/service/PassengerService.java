@@ -59,4 +59,12 @@ public class PassengerService {
     public List<Passenger> searchPassengersByFirstName(String keyword) {
         return passengerRepository.findByFirstNameContaining(keyword);
     }
+
+    public Passenger getPassenger(PassengerSaveRequest passengerSaveRequest) {
+        Passenger passenger = Passenger.builder()
+                .firstName(passengerSaveRequest.getFirstName())
+                .lastName(passengerSaveRequest.getLastName())
+                .build();
+        return passengerRepository.save(passenger);
+    }
 }

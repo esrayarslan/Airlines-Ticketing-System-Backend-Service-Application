@@ -1,16 +1,11 @@
 package com.arslanesra.service;
 
-import com.arslanesra.dto.airline.AirlineSaveRequest;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.dto.airport.AirportSaveRequest;
 import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.airport.AirportUpdateRequest;
-import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Airport;
 import com.arslanesra.repository.AirportRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +23,9 @@ public class AirportService {
                 .city(airportSaveRequest.getCity())
                 .build();
         Airport savedAirport = airportRepository.save(newAirport);
+        return getAirportSaveResponse(savedAirport);
+    }
+    private static AirportSaveResponse getAirportSaveResponse(Airport savedAirport) {
         return AirportSaveResponse
                 .builder()
                 .id(savedAirport.getId())
@@ -37,23 +35,11 @@ public class AirportService {
                 .build();
     }
     public AirportSaveResponse update(AirportUpdateRequest airportUpdateRequest) {
-        var optionalAirport = airportRepository.findById(airportUpdateRequest.getId());
-        if (optionalAirport.isPresent()) {
-            var airport = optionalAirport.get();
-            airport.setId(airportUpdateRequest.getId());
-            airport.setName(airportUpdateRequest.getName());
-            airport.setCode(airportUpdateRequest.getCode());
-            airport.setCity(airportUpdateRequest.getCity());
-            airport = airportRepository.save(airport);
-            return AirportSaveResponse
-                    .builder()
-                    .id(airport.getId())
-                    .name(airport.getName())
-                    .code(airport.getCode())
-                    .city(airport.getCity())
-                    .build();
-        }
-        throw new RuntimeException("Airport not found");
+        var airport = airportRepository.findById(airportUpdateRequest.getId()).orElseThrow();//exc
+        String airportUpdateRequestName = airportUpdateRequest.getName();
+        airport.setName(airportUpdateRequestName);
+        Airport updatedAirport = airportRepository.save(airport);
+        return getAirportSaveResponse(updatedAirport);
     }
 
     public List<Airport> getAllAirports() {

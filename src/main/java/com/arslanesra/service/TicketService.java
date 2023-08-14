@@ -1,13 +1,9 @@
 package com.arslanesra.service;
 
-import com.arslanesra.dto.flight.FlightSaveRequest;
-import com.arslanesra.dto.flight.FlightSaveResponse;
-import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Flight;
-import com.arslanesra.entity.Route;
+import com.arslanesra.entity.Passenger;
 import com.arslanesra.util.CreditCardUtil;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
-import com.arslanesra.dto.ticket.TicketSaveRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
 import com.arslanesra.dto.ticket.TicketUpdateRequest;
 import com.arslanesra.entity.Ticket;
@@ -23,32 +19,22 @@ import java.util.Optional;
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final FlightService flightService;
+    private final PassengerService passengerService;
     public List<Ticket> findTicketsByNumber(String ticketNumber) {
         return ticketRepository.findByTicketNumber(ticketNumber);
     }
-    public TicketSaveResponse save(TicketSaveRequest ticketSaveRequest){
-        Long flightId = ticketSaveRequest.getFlightId();
-        Flight flight = flightService.getFlight(flightId);
-        var newTicket = Ticket
-                .builder()
-                .flight(flight)
-                .ticketNumber(ticketSaveRequest.getTicketNumber())
-                .passengerName(ticketSaveRequest.getPassengerName())
-                .build();
-        Ticket savedTicket = ticketRepository.save(newTicket);
-        return getTicketSaveResponse(savedTicket);
-
-    }
     private static TicketSaveResponse getTicketSaveResponse(Ticket savedTicket) {
+        String departureName = savedTicket.getFlight().getRoute().getDepartureAirport().getName();
+        String arrivalName = savedTicket.getFlight().getRoute().getArrivalAirport().getName();
         return TicketSaveResponse
                 .builder()
                 .id(savedTicket.getId())
-                .flightId(savedTicket.getFlight().getId())
+                .departureAirport(departureName)
+                .arrivalAirport(arrivalName)
                 .ticketNumber(savedTicket.getTicketNumber())
                 .passengerName(savedTicket.getPassengerName())
                 .build();
     }
-
     public TicketSaveResponse update(TicketUpdateRequest ticketUpdateRequest) {
         var optionalTicket = ticketRepository.findById(ticketUpdateRequest.getId());
         if (optionalTicket.isPresent()) {
@@ -61,22 +47,22 @@ public class TicketService {
                     .builder()
                     .id(ticket.getId())
                     .ticketNumber(ticket.getTicketNumber())
-                    .flightId(ticket.getFlight().getId())
                     .passengerName(ticket.getPassengerName())
                     .build();
         }
         throw new RuntimeException("Ticket not found");
     }
-    public Ticket purchaseTicket(TicketPurchaseRequest request) {
+    public TicketSaveResponse purchaseTicket(TicketPurchaseRequest request) {
         String maskedCardNumber = CreditCardUtil.maskCreditCardNumber(request.getCardNumber());
-
-        Ticket ticket = new Ticket();
-        ticket.setTicketNumber(request.getTicketNumber());
-        ticket.setFlight(request.getFlightId());
-        ticket.setPassengerName(request.getPassengerName());
-        ticket.setMaskedCardNumber(maskedCardNumber);
-
-        return ticketRepository.save(ticket);
+        Long flightId = request.getFlightId();
+        Flight flight = flightService.getFlight(flightId);
+        Passenger passenger = passengerService.getPassenger(request.getPassengerSaveRequest());
+        Ticket ticket = Ticket.builder()
+                .cardNumber(maskedCardNumber)
+                .passengerName(passenger.getFirstName() + " " + passenger.getLastName())
+                .flight(flight)
+                .build();
+        return getTicketSaveResponse(ticketRepository.save(ticket));
     }
     public Ticket cancelTicket(Long ticketId) {
         Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);

@@ -2,7 +2,6 @@ package com.arslanesra.controller;
 
 import com.arslanesra.api.BaseResponse;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
-import com.arslanesra.dto.ticket.TicketSaveRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
 import com.arslanesra.dto.ticket.TicketUpdateRequest;
 import com.arslanesra.entity.Ticket;
@@ -19,12 +18,7 @@ import java.util.List;
 @RequestMapping("/api/tickets")
 public class TicketController {
     private final TicketService ticketService;
-    @PostMapping
-    public ResponseEntity<TicketSaveResponse> createTicket(@Valid @RequestBody TicketSaveRequest ticketSaveRequest) {
-        var response = ticketService.save(ticketSaveRequest);
-        return ResponseEntity.ok(response);
 
-    }
     @GetMapping("/search")
     public List<Ticket> searchTicketsByNumber(@RequestParam String ticketNumber) {
         return ticketService.findTicketsByNumber(ticketNumber);
@@ -45,7 +39,7 @@ public class TicketController {
         return ticketService.getActiveTickets();
     }
     @PostMapping("/purchase")
-    public Ticket purchaseTicket(@RequestBody TicketPurchaseRequest request) {
+    public TicketSaveResponse purchaseTicket(@RequestBody TicketPurchaseRequest request) {
         return ticketService.purchaseTicket(request);
     }
     @PutMapping

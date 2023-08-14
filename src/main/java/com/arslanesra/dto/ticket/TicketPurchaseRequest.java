@@ -1,5 +1,6 @@
 package com.arslanesra.dto.ticket;
 
+import com.arslanesra.dto.passenger.PassengerSaveRequest;
 import com.arslanesra.entity.Flight;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class TicketPurchaseRequest {
-    private Long id;
-    private Flight flightId;
-    private String ticketNumber;
-    private String passengerName;
+    private Long flightId;
+    private PassengerSaveRequest passengerSaveRequest;
     private String cardNumber;
 
 

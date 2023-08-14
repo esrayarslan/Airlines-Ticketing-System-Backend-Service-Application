@@ -3,7 +3,6 @@ package com.arslanesra.controller;
 import com.arslanesra.api.BaseResponse;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
-import com.arslanesra.entity.Route;
 import com.arslanesra.service.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -46,8 +46,8 @@ public class FlightService {
         return getFlightSaveResponse(savedFlight);
     }
 
-    public List<Flight> getAllFlights() {
-        return flightRepository.findAll();
+    public List<FlightSaveResponse> getAllFlights() {
+        return flightRepository.findAll().stream().map(flight -> getFlightSaveResponse(flight)).toList();
     }
 
     /*public Flight createFlight(Flight flight, Long routeId) {

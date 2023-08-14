@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TicketSaveResponse {
     private Long id;
-    private Long flightId;
+    private String departureAirport;
+    private String arrivalAirport;
     private String ticketNumber;
     private String passengerName;
 
