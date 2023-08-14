@@ -21,9 +21,10 @@ public class FlightController {
 
 
     @GetMapping
-    public List<Flight> getAllFlights() {
+    public ResponseEntity<List<Flight>> getAllFlights() {
 
-        return flightService.getAllFlights();
+        var flights = flightService.getAllFlights();
+        return ResponseEntity.ok(flights);
     }
    /* @GetMapping("/search")
     public List<Flight> searchFlights(@RequestParam String keyword) {
