@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Long> {
-   // List<Route> findByDepartureLocationContaining(String keyword);
+    List<Route> findByDepartureAirportContaining(String keyword);
 }

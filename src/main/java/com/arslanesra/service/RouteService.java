@@ -43,10 +43,11 @@ public class RouteService {
         return routeList.stream().map(route -> getRouteSaveResponse(route)).toList();
     }
 
-   /* public List<Route> searchRoutesByOrigin(String keyword) {
-        return routeRepository.findByDepartureLocationContaining(keyword);
-    }*/
     public Route getRoute(Long routeId) {
        return routeRepository.findById(routeId).orElseThrow(); // exception ekle
+    }
+
+    public List<Route> searchRoutesByDepartureAirport(String keyword) {
+        return routeRepository.findByDepartureAirportContaining(keyword);
     }
 }

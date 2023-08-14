@@ -3,6 +3,8 @@ package com.arslanesra.controller;
 import com.arslanesra.api.BaseResponse;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
+import com.arslanesra.entity.Flight;
+import com.arslanesra.entity.Route;
 import com.arslanesra.service.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,10 +30,11 @@ public class RouteController {
     public List<RouteSaveResponse> getAllRoutes() {
         return routeService.getAllRoutes();
     }
-    /*@GetMapping("/search")
-    public List<Route> searchRoutes(@RequestParam String keyword) {
-        return routeService.searchRoutesByOrigin(keyword);
-    }*/
+    @GetMapping("/search")
+    public ResponseEntity<List<Route>> searchRoutesByDepartureAirport(@RequestParam String keyword) {
+        List<Route> routes = routeService.searchRoutesByDepartureAirport(keyword);
+        return new ResponseEntity<>(routes, HttpStatus.OK);
+    }
     @GetMapping("/routes")
     public ResponseEntity<BaseResponse> getRoute() {
         List<RouteSaveResponse> routes = routeService.getAllRoutes();
