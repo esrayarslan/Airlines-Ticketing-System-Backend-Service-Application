@@ -1,8 +1,6 @@
 package com.arslanesra.dto.route;
 
-import com.arslanesra.entity.Airport;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

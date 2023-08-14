@@ -1,5 +1,10 @@
 package com.arslanesra.service;
 
+import com.arslanesra.dto.flight.FlightSaveRequest;
+import com.arslanesra.dto.flight.FlightSaveResponse;
+import com.arslanesra.entity.Airline;
+import com.arslanesra.entity.Flight;
+import com.arslanesra.entity.Route;
 import com.arslanesra.util.CreditCardUtil;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
 import com.arslanesra.dto.ticket.TicketSaveRequest;
@@ -17,39 +22,46 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TicketService {
     private final TicketRepository ticketRepository;
+    private final FlightService flightService;
     public List<Ticket> findTicketsByNumber(String ticketNumber) {
         return ticketRepository.findByTicketNumber(ticketNumber);
     }
     public TicketSaveResponse save(TicketSaveRequest ticketSaveRequest){
+        Long flightId = ticketSaveRequest.getFlightId();
+        Flight flight = flightService.getFlight(flightId);
         var newTicket = Ticket
                 .builder()
-                //.flight(ticketSaveRequest.getFlight())
+                .flight(flight)
                 .ticketNumber(ticketSaveRequest.getTicketNumber())
                 .passengerName(ticketSaveRequest.getPassengerName())
                 .build();
         Ticket savedTicket = ticketRepository.save(newTicket);
+        return getTicketSaveResponse(savedTicket);
+
+    }
+    private static TicketSaveResponse getTicketSaveResponse(Ticket savedTicket) {
         return TicketSaveResponse
                 .builder()
                 .id(savedTicket.getId())
+                .flightId(savedTicket.getFlight().getId())
                 .ticketNumber(savedTicket.getTicketNumber())
-                .flight(savedTicket.getFlight())
                 .passengerName(savedTicket.getPassengerName())
                 .build();
     }
+
     public TicketSaveResponse update(TicketUpdateRequest ticketUpdateRequest) {
         var optionalTicket = ticketRepository.findById(ticketUpdateRequest.getId());
         if (optionalTicket.isPresent()) {
             var ticket = optionalTicket.get();
             ticket.setId(ticketUpdateRequest.getId());
             ticket.setTicketNumber(ticketUpdateRequest.getTicketNumber());
-            ticket.setFlight(ticketUpdateRequest.getFlight());
             ticket.setPassengerName(ticketUpdateRequest.getPassengerName());
             ticket = ticketRepository.save(ticket);
             return TicketSaveResponse
                     .builder()
                     .id(ticket.getId())
                     .ticketNumber(ticket.getTicketNumber())
-                    .flight(ticket.getFlight())
+                    .flightId(ticket.getFlight().getId())
                     .passengerName(ticket.getPassengerName())
                     .build();
         }
@@ -60,7 +72,7 @@ public class TicketService {
 
         Ticket ticket = new Ticket();
         ticket.setTicketNumber(request.getTicketNumber());
-        ticket.setFlight(request.getFlight());
+        ticket.setFlight(request.getFlightId());
         ticket.setPassengerName(request.getPassengerName());
         ticket.setMaskedCardNumber(maskedCardNumber);
 

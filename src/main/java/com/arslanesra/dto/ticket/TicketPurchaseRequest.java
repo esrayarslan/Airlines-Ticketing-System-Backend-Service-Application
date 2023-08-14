@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TicketPurchaseRequest {
     private Long id;
-    private Flight flight;
+    private Flight flightId;
     private String ticketNumber;
     private String passengerName;
     private String cardNumber;

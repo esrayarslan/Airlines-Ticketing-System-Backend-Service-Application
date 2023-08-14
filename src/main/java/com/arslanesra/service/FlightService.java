@@ -70,4 +70,8 @@ public class FlightService {
                 .id(savedFlight.getId())
                 .build();
     }
+
+    public Flight getFlight(Long flightId) {
+        return flightRepository.findById(flightId).orElseThrow();
+    }
 }
