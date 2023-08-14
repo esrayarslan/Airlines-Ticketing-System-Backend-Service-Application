@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class RouteSaveRequest {
-    @NotBlank
-    @Size(min = 5, max = 150)
-    private String departureLocation;
-    @NotBlank
-    @Size(min = 5, max = 150)
-    private String arrivalLocation;
+
+
+    private Long departureAirportId;
+
+    private Long arrivalAirportId;
 
 }

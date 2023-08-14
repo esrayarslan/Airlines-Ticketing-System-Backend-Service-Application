@@ -27,11 +27,11 @@ public class AirlineService {
         Airline savedAirline = airlineRepository.save(newAirline);
         return AirlineSaveResponse
                 .builder()
+                .id(savedAirline.getId())
                 .name(savedAirline.getName())
                 .airplane(savedAirline.getAirplane())
                 .build();
     }
-
     public AirlineSaveResponse update(AirlineUpdateRequest airlineUpdateRequest) {
         var optionalAirline = airlineRepository.findById(airlineUpdateRequest.getId());
         if (optionalAirline.isPresent()) {
@@ -63,6 +63,10 @@ public class AirlineService {
 
     public List<Airline> searchAirline(String keyword) {
         return airlineRepository.findByNameContaining(keyword);
+    }
+
+    public Airline getAirline(Long airlineId) {
+        return airlineRepository.findById(airlineId).orElseThrow();//airline company
     }
 }
 

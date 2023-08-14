@@ -30,6 +30,7 @@ public class AirportService {
         Airport savedAirport = airportRepository.save(newAirport);
         return AirportSaveResponse
                 .builder()
+                .id(savedAirport.getId())
                 .code(savedAirport.getCode())
                 .name(savedAirport.getName())
                 .city(savedAirport.getCity())
@@ -65,5 +66,9 @@ public class AirportService {
 
     public List<Airport> searchAirportsByName(String keyword) {
         return airportRepository.findByNameContaining(keyword);
+    }
+
+    public Airport getAirport(Long airportId) {
+        return airportRepository.findById(airportId).orElseThrow(); //exp
     }
 }

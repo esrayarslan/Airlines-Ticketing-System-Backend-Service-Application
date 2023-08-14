@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class AirlineSaveRequest {
-    private Long id;
+
     @NotBlank
     @Size(min = 5, max = 150)
     private String name;

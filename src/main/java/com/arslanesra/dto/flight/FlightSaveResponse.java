@@ -7,14 +7,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class FlightSaveResponse {
     private Long id;
+    private String departureAirportName;
+    private String arrivalAirportName;
+    private String airlineName;
+    private Double price;
+    private LocalDateTime flightDateTime;
 
-    private Airport fromAirport;
-    private Airport toAirport;
-    private Route route;
 }

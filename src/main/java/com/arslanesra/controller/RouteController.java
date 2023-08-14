@@ -3,8 +3,6 @@ package com.arslanesra.controller;
 import com.arslanesra.api.BaseResponse;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
-import com.arslanesra.dto.route.RouteUpdateRequest;
-import com.arslanesra.entity.Passenger;
 import com.arslanesra.entity.Route;
 import com.arslanesra.service.RouteService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +18,24 @@ import java.util.List;
 public class RouteController {
     private final RouteService routeService;
 
+    @PostMapping
+    public ResponseEntity<RouteSaveResponse> createRoute(@Valid @RequestBody RouteSaveRequest routeSaveRequest) {
+        var response = routeService.save(routeSaveRequest);
+        return ResponseEntity.ok(response);
+
+    }
+
     @GetMapping
-    public List<Route> getAllRoutes() {
+    public List<RouteSaveResponse> getAllRoutes() {
         return routeService.getAllRoutes();
     }
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     public List<Route> searchRoutes(@RequestParam String keyword) {
         return routeService.searchRoutesByOrigin(keyword);
-    }
+    }*/
     @GetMapping("/routes")
     public ResponseEntity<BaseResponse> getRoute() {
-        List<Route> routes = routeService.getAllRoutes();
+        List<RouteSaveResponse> routes = routeService.getAllRoutes();
 
         BaseResponse response = new BaseResponse();
         response.setStatusCode(HttpStatus.OK.value());
@@ -39,17 +44,7 @@ public class RouteController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @PostMapping
-    public ResponseEntity<RouteSaveResponse> createRoute(@Valid @RequestBody RouteSaveRequest routeSaveRequest) {
-        var response = routeService.save(routeSaveRequest);
-        return ResponseEntity.ok(response);
 
-    }
-
-    @PutMapping
-    public ResponseEntity<RouteSaveResponse> updateRoute(@RequestBody RouteUpdateRequest routeUpdateRequest){
-        return ResponseEntity.ok(routeService.update(routeUpdateRequest));
-    }
 
 
 

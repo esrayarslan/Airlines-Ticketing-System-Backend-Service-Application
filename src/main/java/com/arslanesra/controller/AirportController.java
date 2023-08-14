@@ -1,9 +1,6 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.api.BaseResponse;
-import com.arslanesra.dto.airline.AirlineSaveRequest;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.dto.airport.AirportSaveRequest;
 import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.airport.AirportUpdateRequest;

@@ -7,8 +7,6 @@ import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.service.AirlineService;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

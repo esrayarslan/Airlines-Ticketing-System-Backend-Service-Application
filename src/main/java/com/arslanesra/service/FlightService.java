@@ -3,6 +3,7 @@ package com.arslanesra.service;
 import com.arslanesra.dto.flight.FlightSaveRequest;
 import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.flight.FlightUpdateRequest;
+import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Flight;
 import com.arslanesra.entity.Route;
 import com.arslanesra.repository.FlightRepository;
@@ -10,61 +11,63 @@ import com.arslanesra.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class FlightService {
     private final FlightRepository flightRepository;
-    private final RouteRepository routeRepository;
+    private final RouteService routeService;
+    private final AirlineService airlineService;
 
     public FlightSaveResponse save(FlightSaveRequest flightSaveRequest){
+        Long airlineId = flightSaveRequest.getAirlineId();
+        Airline airline = airlineService.getAirline(airlineId);
+        Long routeId = flightSaveRequest.getRouteId();
+        Route route = routeService.getRoute(routeId);
         var newFlight = Flight
                 .builder()
-                .fromAirport(flightSaveRequest.getFromAirport())
-                .toAirport(flightSaveRequest.getToAirport())
-                .route(flightSaveRequest.getRoute())
+                .route(route)
+                .price(flightSaveRequest.getPrice())
+                .flightDateTime(flightSaveRequest.getFlightDateTime())
+                .airline(airline)
                 .build();
         Flight savedFlight = flightRepository.save(newFlight);
-        return FlightSaveResponse
-                .builder()
-                .fromAirport(savedFlight.getFromAirport())
-                .toAirport(savedFlight.getToAirport())
-                .route(savedFlight.getRoute())
-                .build();
+        return getFlightSaveResponse(savedFlight);
     }
-
     public FlightSaveResponse update(FlightUpdateRequest flightUpdateRequest) {
-        var optionalFlight = flightRepository.findById(flightUpdateRequest.getId());
-        if (optionalFlight.isPresent()) {
-            var flight = optionalFlight.get();
-            flight.setId(flightUpdateRequest.getId());
-            flight.setFromAirport(flightUpdateRequest.getFromAirport());
-            flight.setToAirport(flightUpdateRequest.getToAirport());
-            flight.setRoute(flightUpdateRequest.getRoute());
-            flight = flightRepository.save(flight);
-            return FlightSaveResponse
-                    .builder()
-                    .id(flight.getId())
-                    .fromAirport(flight.getFromAirport())
-                    .toAirport(flight.getToAirport())
-                    .route(flight.getRoute())
-                    .build();
-        }
-        throw new RuntimeException("Flight not found");
+        LocalDateTime flightDateTime = flightUpdateRequest.getFlightDateTime();
+        Double price = flightUpdateRequest.getPrice();
+        Flight flight = flightRepository.findById(flightUpdateRequest.getId()).orElseThrow(); //Exc supplier
+        flight.setFlightDateTime(flightDateTime);
+        flight.setPrice(price);
+        Flight savedFlight = flightRepository.save(flight);
+        return getFlightSaveResponse(savedFlight);
     }
 
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
 
-    public Flight createFlight(Flight flight, Long routeId) {
+    /*public Flight createFlight(Flight flight, Long routeId) {
         Route route = routeRepository.getById(routeId);
         flight.setRoute(route);
         return flightRepository.save(flight);
-    }
+    }*/
 
-    public List<Flight> searchFlightsByDeparture(String keyword) {
+    /*public List<Flight> searchFlightsByDeparture(String keyword) {
         return flightRepository.findByFromAirportContaining(keyword);
+    }*/
+    private static FlightSaveResponse getFlightSaveResponse(Flight savedFlight) {
+        return FlightSaveResponse
+                .builder()
+                .airlineName(savedFlight.getAirline().getName())
+                .departureAirportName(savedFlight.getRoute().getDepartureAirport().getName())
+                .arrivalAirportName(savedFlight.getRoute().getArrivalAirport().getName())
+                .flightDateTime(savedFlight.getFlightDateTime())
+                .price(savedFlight.getPrice())
+                .id(savedFlight.getId())
+                .build();
     }
 }

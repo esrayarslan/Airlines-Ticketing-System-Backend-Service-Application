@@ -19,11 +19,12 @@ public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "departure_location", nullable = false)
-    private String departureLocation;
-    @Column(name = "arrival_location", nullable = false )
-    private String arrivalLocation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_airport_id", nullable = false)
+    private Airport departureAirport;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_airport_id", nullable = false)
+    private Airport arrivalAirport;
 
 
 }

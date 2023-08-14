@@ -25,10 +25,10 @@ public class FlightController {
 
         return flightService.getAllFlights();
     }
-    @GetMapping("/search")
+   /* @GetMapping("/search")
     public List<Flight> searchFlights(@RequestParam String keyword) {
         return flightService.searchFlightsByDeparture(keyword);
-    }
+    }*/
     @GetMapping("/flights")
     public ResponseEntity<BaseResponse> getFlight() {
         List<Flight> flights = flightService.getAllFlights();

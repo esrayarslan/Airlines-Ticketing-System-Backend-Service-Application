@@ -1,15 +1,9 @@
 package com.arslanesra.service;
 
-import com.arslanesra.dto.airline.AirlineSaveRequest;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
-import com.arslanesra.dto.route.RouteUpdateRequest;
-import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Airport;
 import com.arslanesra.entity.Route;
-import com.arslanesra.repository.AirportRepository;
 import com.arslanesra.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,51 +14,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RouteService {
     private final RouteRepository routeRepository;
-    private final AirportRepository airportRepository;
+    private final AirportService airportService;
 
     public RouteSaveResponse save(RouteSaveRequest routeSaveRequest){
+        Long arrivalAirportId = routeSaveRequest.getArrivalAirportId();
+        Long departureAirportId = routeSaveRequest.getDepartureAirportId();
+        Airport departureAirport = airportService.getAirport(departureAirportId);
+        Airport arrivalAirport = airportService.getAirport(arrivalAirportId);
         var newRoute = Route
                 .builder()
-                .departureLocation(routeSaveRequest.getDepartureLocation())
-                .arrivalLocation(routeSaveRequest.getArrivalLocation())
+                .departureAirport(departureAirport)
+                .arrivalAirport(arrivalAirport)
                 .build();
         Route savedRoute = routeRepository.save(newRoute);
+        return getRouteSaveResponse(savedRoute);
+    }
+    private static RouteSaveResponse getRouteSaveResponse(Route savedRoute) {
         return RouteSaveResponse
                 .builder()
-                .departureLocation(savedRoute.getDepartureLocation())
-                .arrivalLocation(savedRoute.getArrivalLocation())
+                .id(savedRoute.getId())
+                .departureAirport(savedRoute.getDepartureAirport().getName())
+                .arrivalAirport(savedRoute.getArrivalAirport().getName())
                 .build();
     }
 
-    public RouteSaveResponse update(RouteUpdateRequest routeUpdateRequest) {
-        var optionalRoute = routeRepository.findById(routeUpdateRequest.getId());
-        if (optionalRoute.isPresent()) {
-            var route = optionalRoute.get();
-            route.setId(routeUpdateRequest.getId());
-            route.setDepartureLocation(routeUpdateRequest.getArrivalLocation());
-            route.setArrivalLocation(routeUpdateRequest.getArrivalLocation());
-            route = routeRepository.save(route);
-            return RouteSaveResponse
-                    .builder()
-                    .id(route.getId())
-                    .build();
-        }
-        throw new RuntimeException("Route not found");
+    public List<RouteSaveResponse> getAllRoutes() {
+        List<Route> routeList = routeRepository.findAll();
+        return routeList.stream().map(route -> getRouteSaveResponse(route)).toList();
     }
 
-
-    public List<Route> getAllRoutes() {
-        return routeRepository.findAll();
-    }
-
-    public Route createRoute(Route route, Long fromAirportId, Long toAirportId) {
-        Airport departureLocation = airportRepository.getById(fromAirportId);
-        Airport arrivalLocation = airportRepository.getById(toAirportId);
-
-        return routeRepository.save(route);
-    }
-
-    public List<Route> searchRoutesByOrigin(String keyword) {
+   /* public List<Route> searchRoutesByOrigin(String keyword) {
         return routeRepository.findByDepartureLocationContaining(keyword);
+    }*/
+    public Route getRoute(Long routeId) {
+       return routeRepository.findById(routeId).orElseThrow(); // exception ekle
     }
 }

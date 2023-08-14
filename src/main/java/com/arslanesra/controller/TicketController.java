@@ -1,22 +1,16 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.api.BaseResponse;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
-import com.arslanesra.dto.route.RouteSaveRequest;
-import com.arslanesra.dto.route.RouteSaveResponse;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
 import com.arslanesra.dto.ticket.TicketSaveRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
 import com.arslanesra.dto.ticket.TicketUpdateRequest;
-import com.arslanesra.entity.Route;
 import com.arslanesra.entity.Ticket;
 import com.arslanesra.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
 

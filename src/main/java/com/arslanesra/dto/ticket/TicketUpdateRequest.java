@@ -15,5 +15,5 @@ public class TicketUpdateRequest {
     private Flight flight;
     private String ticketNumber;
     private String passengerName;
-    private String maskedCardNumber;
+
 }

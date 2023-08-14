@@ -16,7 +16,7 @@ public class TicketPurchaseRequest {
     private String ticketNumber;
     private String passengerName;
     private String cardNumber;
-    private String maskedCardNumber;
+
 
 
 }

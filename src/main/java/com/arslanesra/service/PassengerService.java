@@ -1,16 +1,11 @@
 package com.arslanesra.service;
 
-import com.arslanesra.dto.airline.AirlineSaveRequest;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
-import com.arslanesra.dto.airline.AirlineUpdateRequest;
 import com.arslanesra.dto.passenger.PassengerSaveRequest;
 import com.arslanesra.dto.passenger.PassengerSaveResponse;
 import com.arslanesra.dto.passenger.PassengerUpdateRequest;
-import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Passenger;
 import com.arslanesra.repository.PassengerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.arslanesra.service;
 
-import com.arslanesra.CreditCardUtil;
+import com.arslanesra.util.CreditCardUtil;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
 import com.arslanesra.dto.ticket.TicketSaveRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
@@ -23,9 +23,8 @@ public class TicketService {
     public TicketSaveResponse save(TicketSaveRequest ticketSaveRequest){
         var newTicket = Ticket
                 .builder()
-                .flight(ticketSaveRequest.getFlight())
+                //.flight(ticketSaveRequest.getFlight())
                 .ticketNumber(ticketSaveRequest.getTicketNumber())
-                .maskedCardNumber(ticketSaveRequest.getMaskedCardNumber())
                 .passengerName(ticketSaveRequest.getPassengerName())
                 .build();
         Ticket savedTicket = ticketRepository.save(newTicket);
@@ -34,7 +33,6 @@ public class TicketService {
                 .id(savedTicket.getId())
                 .ticketNumber(savedTicket.getTicketNumber())
                 .flight(savedTicket.getFlight())
-                .maskedCardNumber(savedTicket.getMaskedCardNumber())
                 .passengerName(savedTicket.getPassengerName())
                 .build();
     }
@@ -46,7 +44,6 @@ public class TicketService {
             ticket.setTicketNumber(ticketUpdateRequest.getTicketNumber());
             ticket.setFlight(ticketUpdateRequest.getFlight());
             ticket.setPassengerName(ticketUpdateRequest.getPassengerName());
-            ticket.setMaskedCardNumber(ticketUpdateRequest.getMaskedCardNumber());
             ticket = ticketRepository.save(ticket);
             return TicketSaveResponse
                     .builder()
@@ -54,7 +51,6 @@ public class TicketService {
                     .ticketNumber(ticket.getTicketNumber())
                     .flight(ticket.getFlight())
                     .passengerName(ticket.getPassengerName())
-                    .maskedCardNumber(ticket.getMaskedCardNumber())
                     .build();
         }
         throw new RuntimeException("Ticket not found");
