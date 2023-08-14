@@ -1,6 +1,6 @@
 package com.arslanesra.controller;
 
-import com.arslanesra.api.BaseResponse;
+import com.arslanesra.base.BaseResponse;
 import com.arslanesra.dto.passenger.PassengerSaveRequest;
 import com.arslanesra.dto.passenger.PassengerSaveResponse;
 import com.arslanesra.dto.passenger.PassengerUpdateRequest;
@@ -27,18 +27,6 @@ public class PassengerController {
     public List<Passenger> searchPassengers(@RequestParam String keyword) {
         return passengerService.searchPassengersByFirstName(keyword);
     }
-    @GetMapping("/passengers")
-    public ResponseEntity<BaseResponse> getPassenger() {
-        List<Passenger> passengers = passengerService.getAllPassengers();
-
-        BaseResponse response = new BaseResponse();
-        response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Success");
-        response.setData(passengers);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<PassengerSaveResponse> createPassenger( @RequestBody PassengerSaveRequest passengerSaveRequest) {
         var response = passengerService.save(passengerSaveRequest);

@@ -1,6 +1,8 @@
 package com.arslanesra.controller;
 
-import com.arslanesra.api.BaseResponse;
+import com.arslanesra.base.BaseResponse;
+import com.arslanesra.dto.airport.AirportSaveRequest;
+import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.flight.FlightSaveRequest;
 import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.flight.FlightUpdateRequest;
@@ -31,21 +33,15 @@ public class FlightController {
         List<Flight> flights = flightService.searchFlightsByDepartureAirport(keyword);
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
-    @GetMapping("/flights")
-    public ResponseEntity<BaseResponse> getFlight() {
-        List<FlightSaveResponse> flights = flightService.getAllFlights();
 
-        BaseResponse response = new BaseResponse();
-        response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Success");
-        response.setData(flights);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<FlightSaveResponse> createFlight(@Valid @RequestBody FlightSaveRequest flightSaveRequest) {
-        var response = flightService.save(flightSaveRequest);
+    @PostMapping("/flight")
+    public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSaveRequest request) {
+        var flightSaveResponse = flightService.save(request);
+        var response =  BaseResponse.<FlightSaveResponse>builder()
+                .status(HttpStatus.CREATED.value())
+                .isSuccess(true)
+                .data(flightSaveResponse)
+                .build();
         return ResponseEntity.ok(response);
     }
     @PutMapping

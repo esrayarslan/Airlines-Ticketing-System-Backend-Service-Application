@@ -1,6 +1,8 @@
 package com.arslanesra.controller;
 
-import com.arslanesra.api.BaseResponse;
+import com.arslanesra.base.BaseResponse;
+import com.arslanesra.dto.airline.AirlineSaveRequest;
+import com.arslanesra.dto.airline.AirlineSaveResponse;
 import com.arslanesra.dto.airport.AirportSaveRequest;
 import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.airport.AirportUpdateRequest;
@@ -28,22 +30,15 @@ public class AirportController {
     public List<Airport> searchAirports(@RequestParam String keyword) {
         return airportService.searchAirportsByName(keyword);
     }
-    @GetMapping("/airports")
-    public ResponseEntity<BaseResponse> getAirport() {
-        List<Airport> airports = airportService.getAllAirports();
-
-        BaseResponse response = new BaseResponse();
-        response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Success");
-        response.setData(airports);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    @PostMapping
-    public ResponseEntity<AirportSaveResponse> createAirline(@Valid @RequestBody AirportSaveRequest airportSaveRequest) {
-        var response = airportService.save(airportSaveRequest);
+    @PostMapping("/airport")
+    public ResponseEntity<Object> createAirport(@Valid @RequestBody AirportSaveRequest request) {
+        var airportSaveResponse = airportService.save(request);
+        var response =  BaseResponse.<AirportSaveResponse>builder()
+                .status(HttpStatus.CREATED.value())
+                .isSuccess(true)
+                .data(airportSaveResponse)
+                .build();
         return ResponseEntity.ok(response);
-
     }
     @PutMapping
     public ResponseEntity<AirportSaveResponse> updateAirport(@RequestBody AirportUpdateRequest airportUpdateRequest){

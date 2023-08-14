@@ -1,6 +1,8 @@
 package com.arslanesra.controller;
 
-import com.arslanesra.api.BaseResponse;
+import com.arslanesra.base.BaseResponse;
+import com.arslanesra.dto.route.RouteSaveRequest;
+import com.arslanesra.dto.route.RouteSaveResponse;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
 import com.arslanesra.dto.ticket.TicketUpdateRequest;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -23,16 +26,15 @@ public class TicketController {
     public List<Ticket> searchTicketsByNumber(@RequestParam String ticketNumber) {
         return ticketService.findTicketsByNumber(ticketNumber);
     }
-    @GetMapping("/tickets")
-    public ResponseEntity<BaseResponse> getTicket() {
-        List<Ticket> tickets = ticketService.getAllTickets();
-
-        BaseResponse response = new BaseResponse();
-        response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Success");
-        response.setData(tickets);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    @PostMapping("/ticket")
+    public ResponseEntity<Object> createTicket(@Valid @RequestBody TicketPurchaseRequest request) {
+        var ticketSaveResponse = ticketService.purchaseTicket(request);
+        var response =  BaseResponse.<TicketSaveResponse>builder()
+                .status(HttpStatus.CREATED.value())
+                .isSuccess(true)
+                .data(ticketSaveResponse)
+                .build();
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/active")
     public List<Ticket> getActiveTickets() {

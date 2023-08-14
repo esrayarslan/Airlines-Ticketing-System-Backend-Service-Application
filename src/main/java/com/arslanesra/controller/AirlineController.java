@@ -1,6 +1,6 @@
 package com.arslanesra.controller;
 
-import com.arslanesra.api.BaseResponse;
+import com.arslanesra.base.BaseResponse;
 import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.dto.airline.AirlineSaveResponse;
 import com.arslanesra.entity.Airline;
@@ -34,23 +34,16 @@ public class AirlineController {
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(airlines);
     }
-    @GetMapping("/airlines")
-    public ResponseEntity<BaseResponse> getAirline() {
-        List<Airline> airlines = airlineService.getAllAirlines();
 
-        BaseResponse response = new BaseResponse();
-        response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Success");
-        response.setData(airlines);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<AirlineSaveResponse> createAirline(@Valid @RequestBody AirlineSaveRequest airlineSaveRequest) {
-        var response = airlineService.save(airlineSaveRequest);
+    @PostMapping("/airline")
+    public ResponseEntity<Object> createAirline(@RequestBody AirlineSaveRequest request) {
+        var airlineSaveResponse = airlineService.save(request);
+        var response =  BaseResponse.<AirlineSaveResponse>builder()
+                .status(HttpStatus.CREATED.value())
+                .isSuccess(true)
+                .data(airlineSaveResponse)
+                .build();
         return ResponseEntity.ok(response);
-
     }
 
 

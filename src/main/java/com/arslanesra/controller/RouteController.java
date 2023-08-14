@@ -1,9 +1,10 @@
 package com.arslanesra.controller;
 
-import com.arslanesra.api.BaseResponse;
+import com.arslanesra.base.BaseResponse;
+import com.arslanesra.dto.flight.FlightSaveRequest;
+import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
-import com.arslanesra.entity.Flight;
 import com.arslanesra.entity.Route;
 import com.arslanesra.service.RouteService;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +20,16 @@ import java.util.List;
 public class RouteController {
     private final RouteService routeService;
 
-    @PostMapping
-    public ResponseEntity<RouteSaveResponse> createRoute(@Valid @RequestBody RouteSaveRequest routeSaveRequest) {
-        var response = routeService.save(routeSaveRequest);
+    @PostMapping("/route")
+    public ResponseEntity<Object> createRoute(@Valid @RequestBody RouteSaveRequest request) {
+        var routeSaveResponse = routeService.save(request);
+        var response =  BaseResponse.<RouteSaveResponse>builder()
+                .status(HttpStatus.CREATED.value())
+                .isSuccess(true)
+                .data(routeSaveResponse)
+                .build();
         return ResponseEntity.ok(response);
-
     }
-
     @GetMapping
     public List<RouteSaveResponse> getAllRoutes() {
         return routeService.getAllRoutes();
@@ -35,17 +39,7 @@ public class RouteController {
         List<Route> routes = routeService.searchRoutesByDepartureAirport(keyword);
         return new ResponseEntity<>(routes, HttpStatus.OK);
     }
-    @GetMapping("/routes")
-    public ResponseEntity<BaseResponse> getRoute() {
-        List<RouteSaveResponse> routes = routeService.getAllRoutes();
 
-        BaseResponse response = new BaseResponse();
-        response.setStatusCode(HttpStatus.OK.value());
-        response.setMessage("Success");
-        response.setData(routes);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
 
 
 

@@ -1,7 +1,9 @@
 package com.arslanesra.service;
 
+import com.arslanesra.dto.route.RouteSaveResponse;
 import com.arslanesra.entity.Flight;
 import com.arslanesra.entity.Passenger;
+import com.arslanesra.entity.Route;
 import com.arslanesra.util.CreditCardUtil;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
@@ -77,8 +79,13 @@ public class TicketService {
     public List<Ticket> getActiveTickets() {
         return ticketRepository.findByDeletedFalse();
     }
-
-    public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+//
+//   // public List<Ticket> getAllTickets() {
+//        return ticketRepository.findAll();
+//    }
+    public List<TicketSaveResponse> getAllTickets() {
+     List<Ticket> ticketList = ticketRepository.findAll();
+     return ticketList.stream().map(ticket -> getTicketSaveResponse(ticket)).toList();
     }
+
 }
