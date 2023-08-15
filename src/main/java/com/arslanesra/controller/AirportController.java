@@ -31,8 +31,8 @@ public class AirportController {
     public List<Airport> searchAirports(@RequestParam String keyword) {
         return airportService.searchAirportsByName(keyword);
     }
-    @PostMapping("/airport")
-    public ResponseEntity<Object> createAirport(@Valid @RequestBody AirportSaveRequest request) throws BadRequestException {
+    @PostMapping
+    public ResponseEntity<BaseResponse<AirportSaveResponse>> createAirport(@Valid @RequestBody AirportSaveRequest request){
         var airportSaveResponse = airportService.save(request);
         var response =  BaseResponse.<AirportSaveResponse>builder()
                 .status(HttpStatus.CREATED.value())

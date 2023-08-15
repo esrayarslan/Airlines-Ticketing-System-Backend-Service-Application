@@ -36,7 +36,7 @@ public class AirlineController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(airlines);
     }
 
-    @PostMapping("/airline")
+    @PostMapping
     public ResponseEntity<Object> createAirline(@RequestBody AirlineSaveRequest request) throws BadRequestException {
         var airlineSaveResponse = airlineService.save(request);
         var response =  BaseResponse.<AirlineSaveResponse>builder()

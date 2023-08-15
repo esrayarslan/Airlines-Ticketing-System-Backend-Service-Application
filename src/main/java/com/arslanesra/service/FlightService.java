@@ -51,16 +51,12 @@ public class FlightService {
         return flightRepository.findAll().stream().map(flight -> getFlightSaveResponse(flight)).toList();
     }
 
-    /*public Flight createFlight(Flight flight, Long routeId) {
-        Route route = routeRepository.getById(routeId);
-        flight.setRoute(route);
-        return flightRepository.save(flight);
-    }*/
-
-    public List<Flight> searchFlightsByDepartureAirport(String keyword) {
-        return flightRepository.findByRouteDepartureAirportContaining(keyword);
+    public List<FlightSaveResponse> searchFlightsByDepartureAirport(String keyword) {
+        List<Flight> flights = flightRepository.findAllByRouteDepartureAirportNameContainingIgnoreCase(keyword);
+        return flights.stream().map(flight -> getFlightSaveResponse(flight)).toList();
     }
-    private static FlightSaveResponse getFlightSaveResponse(Flight savedFlight) {
+    private FlightSaveResponse getFlightSaveResponse(Flight savedFlight) {
+
         return FlightSaveResponse
                 .builder()
                 .airlineName(savedFlight.getAirline().getName())

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
-    List<Flight> findByRouteDepartureAirportContaining(String keyword);
+    List<Flight> findAllByRouteDepartureAirportNameContainingIgnoreCase(String keyword);
 }

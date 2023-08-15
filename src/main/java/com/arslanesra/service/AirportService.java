@@ -16,10 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AirportService {
     private final AirportRepository airportRepository;
-    @Transactional
-    public AirportSaveResponse save(AirportSaveRequest airportSaveRequest) throws BadRequestException {
-        try {
-
+    public AirportSaveResponse save(AirportSaveRequest airportSaveRequest) {
             var newAirport = Airport
                     .builder()
                     .code(airportSaveRequest.getCode())
@@ -28,9 +25,6 @@ public class AirportService {
                     .build();
             Airport savedAirport = airportRepository.save(newAirport);
             return getAirportSaveResponse(savedAirport);
-        } catch (Exception ex) {
-            throw new BadRequestException("Havalimanı eklenirken bir hata oluştu. ");
-        }
     }
     private static AirportSaveResponse getAirportSaveResponse(Airport savedAirport) {
         return AirportSaveResponse
@@ -52,11 +46,6 @@ public class AirportService {
     public List<Airport> getAllAirports() {
         return airportRepository.findAll();
     }
-
-    public Airport createAirport(Airport airport) {
-        return airportRepository.save(airport);
-    }
-
     public List<Airport> searchAirportsByName(String keyword) {
         return airportRepository.findByNameContaining(keyword);
     }

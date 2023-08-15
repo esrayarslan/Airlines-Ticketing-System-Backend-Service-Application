@@ -30,7 +30,7 @@ public class RouteService {
         Route savedRoute = routeRepository.save(newRoute);
         return getRouteSaveResponse(savedRoute);
     }
-    private static RouteSaveResponse getRouteSaveResponse(Route savedRoute) {
+    private RouteSaveResponse getRouteSaveResponse(Route savedRoute) {
         return RouteSaveResponse
                 .builder()
                 .id(savedRoute.getId())
@@ -38,21 +38,17 @@ public class RouteService {
                 .arrivalAirport(savedRoute.getArrivalAirport().getName())
                 .build();
     }
-
     public List<RouteSaveResponse> getAllRoutes() {
         List<Route> routeList = routeRepository.findAll();
         return routeList.stream().map(route -> getRouteSaveResponse(route)).toList();
     }
-
-   /* public List<Route> searchRoutesByOrigin(String keyword) {
-        return routeRepository.findByDepartureLocationContaining(keyword);
-    }*/
     public Route getRoute(Long routeId) {
        return routeRepository.findById(routeId).orElseThrow(); // exception ekle
     }
 
-    public Route searchRouteById(Long routeId) {
-        return routeRepository.findById(routeId)
+    public RouteSaveResponse searchRouteById(Long routeId) {
+        Route route = routeRepository.findById(routeId)
                 .orElseThrow(() -> new NoSuchElementException("Route not found"));
+        return getRouteSaveResponse(route);
     }
 }

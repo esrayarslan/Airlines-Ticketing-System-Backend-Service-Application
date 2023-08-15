@@ -6,7 +6,9 @@ import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.flight.FlightSaveRequest;
 import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.flight.FlightUpdateRequest;
+import com.arslanesra.dto.route.RouteSaveResponse;
 import com.arslanesra.entity.Flight;
+import com.arslanesra.entity.Route;
 import com.arslanesra.exception.NotFoundException;
 import com.arslanesra.service.FlightService;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +32,13 @@ public class FlightController {
         return ResponseEntity.ok(flights);
     }
     @GetMapping("/search")
-    public ResponseEntity<List<Flight>> searchFlightsByDepartureAirport(@RequestParam String keyword) {
-        List<Flight> flights = flightService.searchFlightsByDepartureAirport(keyword);
+    public ResponseEntity<List<FlightSaveResponse>> searchFlightsByDepartureAirport(@RequestParam String keyword) {
+        List<FlightSaveResponse> flights = flightService.searchFlightsByDepartureAirport(keyword);
         return new ResponseEntity<>(flights, HttpStatus.OK);
     }
 
-    @PostMapping("/flight")
+
+    @PostMapping
     public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSaveRequest request) throws NotFoundException {
         var flightSaveResponse = flightService.save(request);
         var response =  BaseResponse.<FlightSaveResponse>builder()

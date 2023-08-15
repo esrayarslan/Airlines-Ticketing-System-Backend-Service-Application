@@ -23,8 +23,9 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final FlightService flightService;
     private final PassengerService passengerService;
-    public List<Ticket> findTicketsByNumber(String ticketNumber) {
-        return ticketRepository.findByTicketNumber(ticketNumber);
+    public TicketSaveResponse findTicketByNumber(String ticketNumber) {
+        Ticket ticket = ticketRepository.findByTicketNumber(ticketNumber);
+        return getTicketSaveResponse(ticket);
     }
     private static TicketSaveResponse getTicketSaveResponse(Ticket savedTicket) {
         String departureName = savedTicket.getFlight().getRoute().getDepartureAirport().getName();
@@ -67,24 +68,18 @@ public class TicketService {
                 .build();
         return getTicketSaveResponse(ticketRepository.save(ticket));
     }
-    public Ticket cancelTicket(Long ticketId) {
-        Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
-        if (optionalTicket.isPresent()) {
-            Ticket ticket = optionalTicket.get();
-            ticket.setActive(ticket.isActive());
-            return ticketRepository.save(ticket);
-        }
-        throw new RuntimeException("Ticket not found");
-    }
     public List<Ticket> getActiveTickets() {
-        return ticketRepository.findByIsActiveTrue();
+        return ticketRepository.findAll();
     }
-
-
     public List<TicketSaveResponse> getAllTickets() {
      List<Ticket> ticketList = ticketRepository.findAll();
      return ticketList.stream().map(ticket -> getTicketSaveResponse(ticket)).toList();
     }
 
+    public void cancelTicket(String ticketNumber) {
+        Ticket byTicketNumber = ticketRepository.findByTicketNumber(ticketNumber);
+        byTicketNumber.setActive(false);
+        ticketRepository.save(byTicketNumber);
+    }
 
 }

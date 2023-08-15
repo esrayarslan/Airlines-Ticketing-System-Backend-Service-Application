@@ -22,7 +22,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class RouteController {
     private final RouteService routeService;
 
-    @PostMapping("/route")
+    @PostMapping
     public ResponseEntity<Object> createRoute(@Valid @RequestBody RouteSaveRequest request) {
         var routeSaveResponse = routeService.save(request);
         var response =  BaseResponse.<RouteSaveResponse>builder()
@@ -37,14 +37,13 @@ public class RouteController {
         return routeService.getAllRoutes();
     }
     @GetMapping("/search")
-    public ResponseEntity<BaseResponse<Route>> searchRouteById(@RequestParam Long routeId) {
-        Route route = routeService.searchRouteById(routeId);
-        BaseResponse<Route> response = BaseResponse.<Route>builder()
+    public ResponseEntity<BaseResponse<RouteSaveResponse>> searchRouteById(@RequestParam Long routeId) {
+        RouteSaveResponse route = routeService.searchRouteById(routeId);
+        BaseResponse<RouteSaveResponse> response = BaseResponse.<RouteSaveResponse>builder()
                 .status(HttpStatus.OK.value())
                 .isSuccess(true)
                 .data(route)
                 .build();
-
         return ResponseEntity.ok(response);
     }
 

@@ -25,17 +25,14 @@ import java.util.List;
 public class TicketController {
     private final TicketService ticketService;
 
+
     @GetMapping("/search")
-    public List<Ticket> searchTicketsByNumber(@RequestParam String ticketNumber) {
-        return ticketService.findTicketsByNumber(ticketNumber);
-    }
-    @PostMapping("/ticket")
-    public ResponseEntity<Object> createTicket(@Valid @RequestBody TicketPurchaseRequest request) {
-        var ticketSaveResponse = ticketService.purchaseTicket(request);
-        var response =  BaseResponse.<TicketSaveResponse>builder()
-                .status(HttpStatus.CREATED.value())
+    public ResponseEntity<BaseResponse<TicketSaveResponse>> searchTicketsByNumber(@RequestParam String ticketNumber) {
+        TicketSaveResponse ticket = ticketService.findTicketByNumber(ticketNumber);
+        BaseResponse<TicketSaveResponse> response = BaseResponse.<TicketSaveResponse>builder()
+                .status(HttpStatus.OK.value())
                 .isSuccess(true)
-                .data(ticketSaveResponse)
+                .data(ticket)
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -56,6 +53,10 @@ public class TicketController {
 
         var tickets = ticketService.getAllTickets();
         return ResponseEntity.ok(tickets);
+    }
+    @DeleteMapping
+    public void cancelTicket(@RequestParam String ticketNumber)  {
+        ticketService.cancelTicket(ticketNumber);
     }
 
 }
