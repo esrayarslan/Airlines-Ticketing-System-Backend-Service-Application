@@ -50,11 +50,6 @@ public class FlightService {
     public List<FlightSaveResponse> getAllFlights() {
         return flightRepository.findAll().stream().map(flight -> getFlightSaveResponse(flight)).toList();
     }
-
-    public List<FlightSaveResponse> searchFlightsByDepartureAirport(String keyword) {
-        List<Flight> flights = flightRepository.findAllByRouteDepartureAirportNameContainingIgnoreCase(keyword);
-        return flights.stream().map(flight -> getFlightSaveResponse(flight)).toList();
-    }
     private FlightSaveResponse getFlightSaveResponse(Flight savedFlight) {
 
         return FlightSaveResponse

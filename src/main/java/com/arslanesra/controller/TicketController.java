@@ -24,8 +24,6 @@ import java.util.List;
 @RequestMapping("/api/tickets")
 public class TicketController {
     private final TicketService ticketService;
-
-
     @GetMapping("/search")
     public ResponseEntity<BaseResponse<TicketSaveResponse>> searchTicketsByNumber(@RequestParam String ticketNumber) {
         TicketSaveResponse ticket = ticketService.findTicketByNumber(ticketNumber);

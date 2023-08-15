@@ -23,20 +23,16 @@ import java.util.List;
 @RequestMapping("/api/flights")
 public class FlightController {
     private final FlightService flightService;
-
-
     @GetMapping
-    public ResponseEntity<List<FlightSaveResponse>> getAllFlights() {
-
-        var flights = flightService.getAllFlights();
-        return ResponseEntity.ok(flights);
+    public ResponseEntity<BaseResponse<List<FlightSaveResponse>>> searchFlightsByDepartureAirport() {
+        List<FlightSaveResponse> flightSaveResponses = flightService.getAllFlights();
+        BaseResponse<List<FlightSaveResponse>> response = BaseResponse.<List<FlightSaveResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .isSuccess(true)
+                .data(flightSaveResponses)
+                .build();
+        return ResponseEntity.ok(response);
     }
-    @GetMapping("/search")
-    public ResponseEntity<List<FlightSaveResponse>> searchFlightsByDepartureAirport(@RequestParam String keyword) {
-        List<FlightSaveResponse> flights = flightService.searchFlightsByDepartureAirport(keyword);
-        return new ResponseEntity<>(flights, HttpStatus.OK);
-    }
-
 
     @PostMapping
     public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSaveRequest request) throws NotFoundException {
