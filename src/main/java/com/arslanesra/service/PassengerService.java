@@ -4,11 +4,13 @@ import com.arslanesra.dto.passenger.PassengerSaveRequest;
 import com.arslanesra.dto.passenger.PassengerSaveResponse;
 import com.arslanesra.dto.passenger.PassengerUpdateRequest;
 import com.arslanesra.entity.Passenger;
+import com.arslanesra.entity.Route;
 import com.arslanesra.repository.PassengerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -68,3 +70,4 @@ public class PassengerService {
         return passengerRepository.save(passenger);
     }
 }
+

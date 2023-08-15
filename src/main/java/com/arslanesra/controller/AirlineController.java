@@ -4,6 +4,7 @@ import com.arslanesra.base.BaseResponse;
 import com.arslanesra.dto.airline.AirlineSaveRequest;
 import com.arslanesra.dto.airline.AirlineSaveResponse;
 import com.arslanesra.entity.Airline;
+import com.arslanesra.exception.BadRequestException;
 import com.arslanesra.service.AirlineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +37,7 @@ public class AirlineController {
     }
 
     @PostMapping("/airline")
-    public ResponseEntity<Object> createAirline(@RequestBody AirlineSaveRequest request) {
+    public ResponseEntity<Object> createAirline(@RequestBody AirlineSaveRequest request) throws BadRequestException {
         var airlineSaveResponse = airlineService.save(request);
         var response =  BaseResponse.<AirlineSaveResponse>builder()
                 .status(HttpStatus.CREATED.value())

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByTicketNumber(String ticketNumber);
-    List<Ticket> findByDeletedFalse();
+    List<Ticket> findByIsActiveTrue();
 }

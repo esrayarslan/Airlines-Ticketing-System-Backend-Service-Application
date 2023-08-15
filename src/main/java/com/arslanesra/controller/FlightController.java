@@ -7,6 +7,7 @@ import com.arslanesra.dto.flight.FlightSaveRequest;
 import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.flight.FlightUpdateRequest;
 import com.arslanesra.entity.Flight;
+import com.arslanesra.exception.NotFoundException;
 import com.arslanesra.service.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class FlightController {
     }
 
     @PostMapping("/flight")
-    public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSaveRequest request) {
+    public ResponseEntity<Object> createFlight(@Valid @RequestBody FlightSaveRequest request) throws NotFoundException {
         var flightSaveResponse = flightService.save(request);
         var response =  BaseResponse.<FlightSaveResponse>builder()
                 .status(HttpStatus.CREATED.value())

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -43,11 +44,15 @@ public class RouteService {
         return routeList.stream().map(route -> getRouteSaveResponse(route)).toList();
     }
 
+   /* public List<Route> searchRoutesByOrigin(String keyword) {
+        return routeRepository.findByDepartureLocationContaining(keyword);
+    }*/
     public Route getRoute(Long routeId) {
        return routeRepository.findById(routeId).orElseThrow(); // exception ekle
     }
 
-    public List<Route> searchRoutesByDepartureAirport(String keyword) {
-        return routeRepository.findByDepartureAirportContaining(keyword);
+    public Route searchRouteById(Long routeId) {
+        return routeRepository.findById(routeId)
+                .orElseThrow(() -> new NoSuchElementException("Route not found"));
     }
 }

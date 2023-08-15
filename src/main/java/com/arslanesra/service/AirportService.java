@@ -4,7 +4,9 @@ import com.arslanesra.dto.airport.AirportSaveRequest;
 import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.airport.AirportUpdateRequest;
 import com.arslanesra.entity.Airport;
+import com.arslanesra.exception.BadRequestException;
 import com.arslanesra.repository.AirportRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +16,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AirportService {
     private final AirportRepository airportRepository;
+    @Transactional
+    public AirportSaveResponse save(AirportSaveRequest airportSaveRequest) throws BadRequestException {
+        try {
 
-    public AirportSaveResponse save(AirportSaveRequest airportSaveRequest){
-        var newAirport = Airport
-                .builder()
-                .code(airportSaveRequest.getCode())
-                .name(airportSaveRequest.getName())
-                .city(airportSaveRequest.getCity())
-                .build();
-        Airport savedAirport = airportRepository.save(newAirport);
-        return getAirportSaveResponse(savedAirport);
+            var newAirport = Airport
+                    .builder()
+                    .code(airportSaveRequest.getCode())
+                    .name(airportSaveRequest.getName())
+                    .city(airportSaveRequest.getCity())
+                    .build();
+            Airport savedAirport = airportRepository.save(newAirport);
+            return getAirportSaveResponse(savedAirport);
+        } catch (Exception ex) {
+            throw new BadRequestException("Havalimanı eklenirken bir hata oluştu. ");
+        }
     }
     private static AirportSaveResponse getAirportSaveResponse(Airport savedAirport) {
         return AirportSaveResponse

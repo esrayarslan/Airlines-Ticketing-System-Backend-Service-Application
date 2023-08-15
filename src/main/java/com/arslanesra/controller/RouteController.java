@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/routes")
@@ -28,17 +30,24 @@ public class RouteController {
                 .isSuccess(true)
                 .data(routeSaveResponse)
                 .build();
-        return ResponseEntity.ok(response);
+        return ok(response);
     }
     @GetMapping
     public List<RouteSaveResponse> getAllRoutes() {
         return routeService.getAllRoutes();
     }
     @GetMapping("/search")
-    public ResponseEntity<List<Route>> searchRoutesByDepartureAirport(@RequestParam String keyword) {
-        List<Route> routes = routeService.searchRoutesByDepartureAirport(keyword);
-        return new ResponseEntity<>(routes, HttpStatus.OK);
+    public ResponseEntity<BaseResponse<Route>> searchRouteById(@RequestParam Long routeId) {
+        Route route = routeService.searchRouteById(routeId);
+        BaseResponse<Route> response = BaseResponse.<Route>builder()
+                .status(HttpStatus.OK.value())
+                .isSuccess(true)
+                .data(route)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
+
 
 
 

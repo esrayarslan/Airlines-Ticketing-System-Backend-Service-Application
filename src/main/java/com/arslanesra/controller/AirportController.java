@@ -7,6 +7,7 @@ import com.arslanesra.dto.airport.AirportSaveRequest;
 import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.airport.AirportUpdateRequest;
 import com.arslanesra.entity.Airport;
+import com.arslanesra.exception.BadRequestException;
 import com.arslanesra.service.AirportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class AirportController {
         return airportService.searchAirportsByName(keyword);
     }
     @PostMapping("/airport")
-    public ResponseEntity<Object> createAirport(@Valid @RequestBody AirportSaveRequest request) {
+    public ResponseEntity<Object> createAirport(@Valid @RequestBody AirportSaveRequest request) throws BadRequestException {
         var airportSaveResponse = airportService.save(request);
         var response =  BaseResponse.<AirportSaveResponse>builder()
                 .status(HttpStatus.CREATED.value())

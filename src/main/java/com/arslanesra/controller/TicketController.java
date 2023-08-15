@@ -1,12 +1,15 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.base.BaseResponse;
+import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
 import com.arslanesra.dto.ticket.TicketPurchaseRequest;
 import com.arslanesra.dto.ticket.TicketSaveResponse;
 import com.arslanesra.dto.ticket.TicketUpdateRequest;
 import com.arslanesra.entity.Ticket;
+import com.arslanesra.exception.BadRequestException;
+import com.arslanesra.exception.NotFoundException;
 import com.arslanesra.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,8 +51,11 @@ public class TicketController {
     public ResponseEntity<TicketSaveResponse> updateTicket(@RequestBody TicketUpdateRequest ticketUpdateRequest){
         return ResponseEntity.ok(ticketService.update(ticketUpdateRequest));
     }
-    @PostMapping("/{ticketId}/cancel")
-    public Ticket cancelTicket(@PathVariable Long ticketId) {
-        return ticketService.cancelTicket(ticketId);
+    @GetMapping
+    public ResponseEntity<List<TicketSaveResponse>> getAllTickets() {
+
+        var tickets = ticketService.getAllTickets();
+        return ResponseEntity.ok(tickets);
     }
+
 }

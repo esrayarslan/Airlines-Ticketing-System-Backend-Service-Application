@@ -1,5 +1,6 @@
 package com.arslanesra.service;
 
+import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.route.RouteSaveResponse;
 import com.arslanesra.entity.Flight;
 import com.arslanesra.entity.Passenger;
@@ -70,22 +71,20 @@ public class TicketService {
         Optional<Ticket> optionalTicket = ticketRepository.findById(ticketId);
         if (optionalTicket.isPresent()) {
             Ticket ticket = optionalTicket.get();
-            ticket.setCancelled(true);
-            ticket.setDeleted(true);
+            ticket.setActive(ticket.isActive());
             return ticketRepository.save(ticket);
         }
         throw new RuntimeException("Ticket not found");
     }
     public List<Ticket> getActiveTickets() {
-        return ticketRepository.findByDeletedFalse();
+        return ticketRepository.findByIsActiveTrue();
     }
-//
-//   // public List<Ticket> getAllTickets() {
-//        return ticketRepository.findAll();
-//    }
+
+
     public List<TicketSaveResponse> getAllTickets() {
      List<Ticket> ticketList = ticketRepository.findAll();
      return ticketList.stream().map(ticket -> getTicketSaveResponse(ticket)).toList();
     }
+
 
 }

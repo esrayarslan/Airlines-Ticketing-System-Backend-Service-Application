@@ -6,6 +6,7 @@ import com.arslanesra.dto.flight.FlightUpdateRequest;
 import com.arslanesra.entity.Airline;
 import com.arslanesra.entity.Flight;
 import com.arslanesra.entity.Route;
+import com.arslanesra.exception.NotFoundException;
 import com.arslanesra.repository.FlightRepository;
 import com.arslanesra.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class FlightService {
     private final RouteService routeService;
     private final AirlineService airlineService;
 
-    public FlightSaveResponse save(FlightSaveRequest flightSaveRequest){
+    public FlightSaveResponse save(FlightSaveRequest flightSaveRequest) throws NotFoundException {
         Long airlineId = flightSaveRequest.getAirlineId();
         Airline airline = airlineService.getAirline(airlineId);
         Long routeId = flightSaveRequest.getRouteId();

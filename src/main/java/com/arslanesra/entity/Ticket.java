@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 import java.rmi.server.UID;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Table(name = "tickets")
+@Where(clause = "is_active = true")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +31,7 @@ public class Ticket {
     private String passengerName;
     @Column(nullable = false)
     private String cardNumber;
-    private boolean cancelled = false;
-    private boolean deleted = false;
+    @Builder.Default
+    @Column(name = "is_active")
+    private boolean isActive = true;
 }
