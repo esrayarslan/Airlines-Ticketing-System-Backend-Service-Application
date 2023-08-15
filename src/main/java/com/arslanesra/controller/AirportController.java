@@ -1,13 +1,10 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.base.BaseResponse;
-import com.arslanesra.dto.airline.AirlineSaveRequest;
-import com.arslanesra.dto.airline.AirlineSaveResponse;
 import com.arslanesra.dto.airport.AirportSaveRequest;
 import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.airport.AirportUpdateRequest;
 import com.arslanesra.entity.Airport;
-import com.arslanesra.exception.BadRequestException;
 import com.arslanesra.service.AirportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

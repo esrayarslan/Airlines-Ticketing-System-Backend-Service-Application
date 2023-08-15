@@ -42,18 +42,10 @@ public class AirlineService {
 
             return airlineRepository.findAll();
         }
+    public List<Airline> getAllAirlinesByName (String name) {
 
-    public Airline createAirline(AirlineSaveRequest request) {
-
-        Airline airline = new Airline();
-        airline.setName(request.getName());
-        return airlineRepository.save(airline);
+        return airlineRepository.findByNameContaining(name);
     }
-
-    public List<Airline> searchAirline(String keyword) {
-        return airlineRepository.findByNameContaining(keyword);
-    }
-
     public Airline getAirline(Long airlineId) throws NotFoundException {
         return airlineRepository.findById(airlineId).orElseThrow(() -> new NotFoundException("Havayolu şirketi bulunamadı."));
     }

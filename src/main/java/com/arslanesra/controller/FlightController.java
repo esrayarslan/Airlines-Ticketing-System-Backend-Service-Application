@@ -1,14 +1,9 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.base.BaseResponse;
-import com.arslanesra.dto.airport.AirportSaveRequest;
-import com.arslanesra.dto.airport.AirportSaveResponse;
 import com.arslanesra.dto.flight.FlightSaveRequest;
 import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.flight.FlightUpdateRequest;
-import com.arslanesra.dto.route.RouteSaveResponse;
-import com.arslanesra.entity.Flight;
-import com.arslanesra.entity.Route;
 import com.arslanesra.exception.NotFoundException;
 import com.arslanesra.service.FlightService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +19,17 @@ import java.util.List;
 public class FlightController {
     private final FlightService flightService;
     @GetMapping
-    public ResponseEntity<BaseResponse<List<FlightSaveResponse>>> searchFlightsByDepartureAirport() {
+    public ResponseEntity<BaseResponse<List<FlightSaveResponse>>> getAllFlights() {
+        List<FlightSaveResponse> flightSaveResponses = flightService.getAllFlights();
+        BaseResponse<List<FlightSaveResponse>> response = BaseResponse.<List<FlightSaveResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .isSuccess(true)
+                .data(flightSaveResponses)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/search")
+    public ResponseEntity<BaseResponse<List<FlightSaveResponse>>> searchFlightsByDepartureAirportName(@RequestParam ("name") String name) {
         List<FlightSaveResponse> flightSaveResponses = flightService.getAllFlights();
         BaseResponse<List<FlightSaveResponse>> response = BaseResponse.<List<FlightSaveResponse>>builder()
                 .status(HttpStatus.OK.value())

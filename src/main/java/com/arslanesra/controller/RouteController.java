@@ -1,11 +1,8 @@
 package com.arslanesra.controller;
 
 import com.arslanesra.base.BaseResponse;
-import com.arslanesra.dto.flight.FlightSaveRequest;
-import com.arslanesra.dto.flight.FlightSaveResponse;
 import com.arslanesra.dto.route.RouteSaveRequest;
 import com.arslanesra.dto.route.RouteSaveResponse;
-import com.arslanesra.entity.Route;
 import com.arslanesra.service.RouteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

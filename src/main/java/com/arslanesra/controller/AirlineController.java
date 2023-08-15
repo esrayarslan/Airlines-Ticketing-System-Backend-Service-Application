@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +28,8 @@ public class AirlineController {
         return ResponseEntity.ok(airlines);
     }
     @GetMapping("/search")
-    public ResponseEntity<BaseResponse<List<AirlineSaveResponse>>> searchAirline(@RequestParam String keyword) {
-        List<Airline> airlines = airlineService.getAllAirlines();
+    public ResponseEntity<BaseResponse<List<AirlineSaveResponse>>> searchAirline(@RequestParam("name") String keyword) {
+        List<Airline> airlines = airlineService.getAllAirlinesByName(keyword);
 
         List<AirlineSaveResponse> airlineSaveResponses = airlines.stream()
                 .map(airline -> AirlineSaveResponse.builder()
