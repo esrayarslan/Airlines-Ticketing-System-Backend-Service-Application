@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,14 +29,24 @@ public class AirlineController {
         return ResponseEntity.ok(airlines);
     }
     @GetMapping("/search")
-    public ResponseEntity<List<Airline>> searchAirline(@RequestParam String keyword) {
-        var airlines = airlineService.searchAirline(keyword);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("HEADER-AIRLINE", "Header value airline");
+    public ResponseEntity<BaseResponse<List<AirlineSaveResponse>>> searchAirline(@RequestParam String keyword) {
+        List<Airline> airlines = airlineService.getAllAirlines();
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(airlines);
+        List<AirlineSaveResponse> airlineSaveResponses = airlines.stream()
+                .map(airline -> AirlineSaveResponse.builder()
+                        .id(airline.getId())
+                        .name(airline.getName())
+                        .build())
+                .collect(Collectors.toList());
+
+        BaseResponse<List<AirlineSaveResponse>> response = BaseResponse.<List<AirlineSaveResponse>>builder()
+                .status(HttpStatus.OK.value())
+                .isSuccess(true)
+                .data(airlineSaveResponses)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
-
     @PostMapping
     public ResponseEntity<Object> createAirline(@RequestBody AirlineSaveRequest request) throws BadRequestException {
         var airlineSaveResponse = airlineService.save(request);
