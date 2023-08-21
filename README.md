@@ -3,11 +3,11 @@
 ## Havayolları Biletleme Sistemi Backend Servis Uygulaması
 ## Teknolojiler:
 
--JAVA 17
--Maven
--Spring Boot 3
--MySQL Database
--Restful Web Service (JSON)
+JAVA 17,
+Maven,
+Spring Boot 3,
+MySQL Database,
+Restful Web Service (JSON),
 ## Gereksinimler:
 
 1. Havayolu şirketi eklenebiliyor ve aranabiliyor.
